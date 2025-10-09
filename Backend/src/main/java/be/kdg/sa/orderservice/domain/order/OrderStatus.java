@@ -1,4 +1,4 @@
-package be.kdg.sa.orderservice.domain;
+package be.kdg.sa.orderservice.domain.order;
 
 public enum OrderStatus {
     PENDING,
