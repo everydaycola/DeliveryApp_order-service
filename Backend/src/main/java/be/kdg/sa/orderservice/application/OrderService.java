@@ -3,6 +3,7 @@ package be.kdg.sa.orderservice.application;
 import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
 import be.kdg.sa.orderservice.domain.order.OrderRepository;
+import be.kdg.sa.orderservice.domain.restaurant.RestaurantCatalog;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

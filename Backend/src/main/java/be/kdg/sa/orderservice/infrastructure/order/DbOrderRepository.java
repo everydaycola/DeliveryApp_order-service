@@ -1,10 +1,8 @@
-package be.kdg.sa.orderservice.infrastructure;
+package be.kdg.sa.orderservice.infrastructure.order;
 
 import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
 import be.kdg.sa.orderservice.domain.order.OrderRepository;
-import be.kdg.sa.orderservice.infrastructure.jpa.JpaOrderEntity;
-import be.kdg.sa.orderservice.infrastructure.jpa.JpaOrderRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

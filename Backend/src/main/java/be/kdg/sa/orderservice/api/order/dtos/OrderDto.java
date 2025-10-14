@@ -1,4 +1,4 @@
-package be.kdg.sa.orderservice.api;
+package be.kdg.sa.orderservice.api.order.dtos;
 
 import be.kdg.sa.orderservice.domain.order.Order;
 

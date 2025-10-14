@@ -2,15 +2,16 @@ package be.kdg.sa.orderservice.domain.order;
 
 import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
+import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.List;
 
+@Getter
 public class Order {
     private final OrderId orderId;
     private OrderStatus status;
     private final ArrayList<OrderLine> orderLines;
-    private RestaurantId restaurantId;
+    private final RestaurantId restaurantId;
 
     public Order(OrderId orderId, RestaurantId restaurantId) {
         this.orderId = orderId;
@@ -36,21 +37,5 @@ public class Order {
     // somewhat temporary
     public void setStatus(OrderStatus status) {
         this.status = status;
-    }
-
-    public OrderId getOrderId() {
-        return orderId;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public List <OrderLine> getOrderLines() {
-        return orderLines;
-    }
-
-    public RestaurantId getRestaurantId() {
-        return restaurantId;
     }
 }

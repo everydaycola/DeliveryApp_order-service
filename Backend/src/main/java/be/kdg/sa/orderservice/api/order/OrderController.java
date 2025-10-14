@@ -1,5 +1,6 @@
-package be.kdg.sa.orderservice.api;
+package be.kdg.sa.orderservice.api.order;
 
+import be.kdg.sa.orderservice.api.order.dtos.OrderDto;
 import be.kdg.sa.orderservice.application.OrderService;
 import be.kdg.sa.orderservice.domain.order.OrderId;
 import org.springframework.http.ResponseEntity;

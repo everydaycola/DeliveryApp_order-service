@@ -4,4 +4,5 @@
 ### GET request to example server
 GET http://localhost:8080/api/orders/{{order1}}
 
-###
+### Get a specific restaurant by ID
+GET http://localhost:8080/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2

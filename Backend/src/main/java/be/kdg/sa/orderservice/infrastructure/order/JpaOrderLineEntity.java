@@ -1,12 +1,14 @@
-package be.kdg.sa.orderservice.infrastructure.jpa;
+package be.kdg.sa.orderservice.infrastructure.order;
 
 import be.kdg.sa.orderservice.domain.order.OrderLine;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "OrderLines")
+@Getter
 public class JpaOrderLineEntity {
     @Id
     @Column
@@ -31,17 +33,5 @@ public class JpaOrderLineEntity {
                 orderLine.getId(),
                 orderLine.getQuantity()
         );
-    }
-
-    public UUID getDishId() {
-        return dishId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public JpaOrderEntity getOrder() {
-        return order;
     }
 }
