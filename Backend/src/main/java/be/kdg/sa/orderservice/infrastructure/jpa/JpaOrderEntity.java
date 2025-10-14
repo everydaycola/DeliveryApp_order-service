@@ -1,8 +1,10 @@
 package be.kdg.sa.orderservice.infrastructure.jpa;
 
+import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
 import be.kdg.sa.orderservice.domain.order.OrderStatus;
+import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -31,7 +33,6 @@ import java.util.UUID;
         JpaOrderEntity jpaOrderEntity =
                 new JpaOrderEntity(order.getOrderId().id(), order.getStatus(), order.getRestaurantId().id());
 
-        //Filling the Jpa Menu
         List <JpaOrderLineEntity> jpaOrderEntities =
                 order.getOrderLines().stream().map(JpaOrderLineEntity::fromDomain).toList();
         jpaOrderEntity.setOrderLines(jpaOrderEntities);
@@ -41,12 +42,17 @@ import java.util.UUID;
 
     public Order toDomain() {
         Order order = new Order(
-                new OrderId(this.orderId)
+                new OrderId(this.orderId),
+                new RestaurantId(this.restaurantId)
         );
 
+        order.setStatus(this.status);
 
-        this.orderLines(jpaOrderLine -> order.NewOrderLine(jpaOrderLine.getQuantity(),
-                                                           jpaOrderLine.getDishId()));                                               ))
+        this.orderLines.forEach(jpaOrderLine ->
+                order.NewOrderLine(
+                        jpaOrderLine.getQuantity(),
+                        new DishId(jpaOrderLine.getDishId())));
+
         return order;
     }
 

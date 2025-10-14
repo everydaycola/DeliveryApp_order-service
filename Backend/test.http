@@ -1,0 +1,7 @@
+@order1=550e8400-e29b-41d4-a716-446655440000
+@order2=550e8400-e29b-41d4-a716-446655440001
+
+### GET request to example server
+GET http://localhost:8080/api/orders/{{order1}}
+
+###

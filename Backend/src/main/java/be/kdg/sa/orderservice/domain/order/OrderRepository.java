@@ -1,3 +1,7 @@
 package be.kdg.sa.orderservice.domain.order;
 
-public interface OrderRepository {}
+import java.util.Optional;
+
+public interface OrderRepository {
+    Optional<Order> findById(OrderId orderId);
+}

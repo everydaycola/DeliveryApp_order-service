@@ -6,23 +6,23 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "OrderLine")
+@Table(name = "OrderLines")
 public class JpaOrderLineEntity {
     @Id
     @Column
-    private UUID id;
+    private UUID dishId;
 
     @Column
     private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "order_id", nullable = false)
-    private JpaOrderEntity Order;
+    @JoinColumn(name = "orderId", nullable = false)
+    private JpaOrderEntity order;
 
     protected JpaOrderLineEntity() {}
 
-    public JpaOrderLineEntity(UUID id, int quantity) {
-        this.id = id;
+    public JpaOrderLineEntity(UUID dishId, int quantity) {
+        this.dishId = dishId;
         this.quantity = quantity;
     }
 
@@ -33,8 +33,8 @@ public class JpaOrderLineEntity {
         );
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getDishId() {
+        return dishId;
     }
 
     public int getQuantity() {
@@ -42,6 +42,6 @@ public class JpaOrderLineEntity {
     }
 
     public JpaOrderEntity getOrder() {
-        return Order;
+        return order;
     }
 }
