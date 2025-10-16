@@ -5,12 +5,12 @@ import be.kdg.sa.orderservice.domain.dish.DishId;
 import java.util.UUID;
 
 public class OrderLine {
-    private final UUID id;
+    private final OrderLineId id;
     private int quantity;
     private final DishId dishId;
 
     public OrderLine(int quantity, DishId dishId) {
-        this.id = UUID.randomUUID();
+        this.id = new OrderLineId(UUID.randomUUID());
         this.quantity = quantity;
         this.dishId = dishId;
     }
@@ -19,7 +19,7 @@ public class OrderLine {
         this.quantity += quantity;
     }
 
-    public UUID getId() {
+    public OrderLineId getId() {
         return id;
     }
 

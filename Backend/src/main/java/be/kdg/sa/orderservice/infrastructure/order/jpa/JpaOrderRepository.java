@@ -1,4 +1,4 @@
-package be.kdg.sa.orderservice.infrastructure.order;
+package be.kdg.sa.orderservice.infrastructure.order.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

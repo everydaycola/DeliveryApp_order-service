@@ -1,4 +1,4 @@
-package be.kdg.sa.orderservice.infrastructure.order;
+package be.kdg.sa.orderservice.infrastructure.order.jpa;
 
 import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.order.Order;

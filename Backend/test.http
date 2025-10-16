@@ -1,8 +1,14 @@
 @order1=550e8400-e29b-41d4-a716-446655440000
 @order2=550e8400-e29b-41d4-a716-446655440001
 
-### GET request to example server
+### GET request to get an order
 GET http://localhost:8080/api/orders/{{order1}}
 
 ### Get a specific restaurant by ID
 GET http://localhost:8080/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2
+
+### Get all restaurants
+GET http://localhost:8080/api/restaurants
+
+### Get the public menu of a restaurant
+GET http://localhost:8081/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2/menu

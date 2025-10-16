@@ -1,4 +1,4 @@
-package be.kdg.sa.orderservice.infrastructure.order;
+package be.kdg.sa.orderservice.infrastructure.order.jpa;
 
 import be.kdg.sa.orderservice.domain.order.OrderLine;
 import jakarta.persistence.*;
@@ -30,7 +30,7 @@ public class JpaOrderLineEntity {
 
     public static JpaOrderLineEntity fromDomain(OrderLine orderLine) {
         return new JpaOrderLineEntity(
-                orderLine.getId(),
+                orderLine.getId().id(),
                 orderLine.getQuantity()
         );
     }

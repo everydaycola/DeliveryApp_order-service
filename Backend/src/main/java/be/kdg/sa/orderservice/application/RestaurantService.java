@@ -1,5 +1,6 @@
 package be.kdg.sa.orderservice.application;
 
+import be.kdg.sa.orderservice.domain.dish.Dish;
 import be.kdg.sa.orderservice.domain.restaurant.Restaurant;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantCatalog;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
@@ -21,5 +22,9 @@ public class RestaurantService {
 
     public Restaurant findByIdWithMenuAndOpeningHours(RestaurantId restaurantId) {
         return restaurants.findByIdWithMenuAndOpeningHours(restaurantId).orElseThrow(restaurantId::notFound);
+    }
+
+    public List<Dish> findMenu(RestaurantId restaurantId) {
+        return restaurants.findMenu(restaurantId).orElse(List.of());
     }
 }
