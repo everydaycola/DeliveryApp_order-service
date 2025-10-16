@@ -77,7 +77,21 @@ import java.util.UUID;
         }
     }
 
+    @Override public Optional <Dish> findDishById(RestaurantId restaurantId, DishId dishId) {
+        try {
+            final DishResponse response = restClient
+                    .get()
+                    .uri("/" + restaurantId.id().toString() + "/menu" + restaurantId.id().toString())
+                    .retrieve()
+                    .body(DishResponse.class);
 
+            if (response == null) return Optional.empty();
+
+            return Optional.of(response.toDish());
+        } catch (final HttpStatusCodeException e) {
+            return Optional.empty();
+        }
+    }
 
     private record RestaurantResponse(
             String id,

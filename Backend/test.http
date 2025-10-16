@@ -11,4 +11,7 @@ GET http://localhost:8080/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2
 GET http://localhost:8080/api/restaurants
 
 ### Get the public menu of a restaurant
-GET http://localhost:8081/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2/menu
+GET http://localhost:8081/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2/menu/27756a48-0b85-4499-aadb-c08a97943263
+
+### Get a specific dish from a restaurant
+GET http://localhost:8081/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2/menu/

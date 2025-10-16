@@ -1,6 +1,7 @@
 package be.kdg.sa.orderservice.domain.restaurant;
 
 import be.kdg.sa.orderservice.domain.dish.Dish;
+import be.kdg.sa.orderservice.domain.dish.DishId;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +12,6 @@ public interface RestaurantCatalog {
     Optional<Restaurant> findByIdWithMenuAndOpeningHours(RestaurantId restaurantId);
 
     Optional<List<Dish>> findMenu(RestaurantId restaurantId);
+
+    Optional<Dish> findDishById(RestaurantId restaurantId, DishId dishId);
 }

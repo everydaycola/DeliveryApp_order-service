@@ -4,6 +4,7 @@ import be.kdg.sa.orderservice.api.restaurant.dtos.DishDto;
 import be.kdg.sa.orderservice.api.restaurant.dtos.RestaurantDto;
 import be.kdg.sa.orderservice.application.RestaurantService;
 import be.kdg.sa.orderservice.domain.dish.Dish;
+import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.restaurant.Restaurant;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
 import org.springframework.http.ResponseEntity;
@@ -55,13 +56,13 @@ public class RestaurantController {
         return ResponseEntity.ok(dtos);
     }
 
-//    @GetMapping("/{id}/menu/{dishId}")
-//    public ResponseEntity<DishDto> findDish(@PathVariable final UUID id, @PathVariable final UUID dishId) {
-//        final RestaurantId restaurantId = new RestaurantId(id);
-//        final DishId dId = new DishId(dishId);
-//
-//        Dish dish = restaurants.findByIdWithMenu(restaurantId).getDish(dId);
-//
-//        return ResponseEntity.ok(DishDto.from(dish));
-//    }
+    @GetMapping("/{id}/menu/{dishId}")
+    public ResponseEntity<DishDto> findDish(@PathVariable final UUID id, @PathVariable final UUID dishId) {
+        final RestaurantId restaurantId = new RestaurantId(id);
+        final DishId dId = new DishId(dishId);
+
+        Dish dish = restaurants.findDishById(restaurantId, dId);
+
+        return ResponseEntity.ok(DishDto.from(dish));
+    }
 }
