@@ -22,4 +22,9 @@ GET http://localhost:8080/api/restaurants/{{restaurant1}}/menu
 GET http://localhost:8080/api/restaurants/{{restaurant1}}/menu/{{restaurant1_dish1}}
 
 ### Open an new order
-GET http://localhost:8080/api/orders/
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+  "restaurantId": "{{restaurant1}}"
+}

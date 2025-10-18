@@ -1,13 +1,13 @@
 package be.kdg.sa.orderservice.api.order;
 
 import be.kdg.sa.orderservice.api.order.dtos.OrderDto;
+import be.kdg.sa.orderservice.api.order.dtos.OrderLineDto;
 import be.kdg.sa.orderservice.application.OrderService;
+import be.kdg.sa.orderservice.domain.dish.DishId;
+import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -19,6 +19,25 @@ public class OrderController {
     public OrderController(OrderService orders) {
         this.orders = orders;
     }
+
+    @PostMapping
+    public ResponseEntity<OrderDto> createOrder(@RequestParam final UUID restaurantId) {
+        Order order = orders.openNewOrderAt(restaurantId);
+        return ResponseEntity.ok(OrderDto.from(order));
+    }
+
+    @PostMapping("/{orderId}/add")
+    public ResponseEntity<OrderDto> addOrder(@PathVariable final UUID restaurantId,
+                                             @RequestBody final OrderLineDto orderLineDto) {
+        Order order = orders.addLineToOrder(
+                new OrderId(restaurantId),
+                new DishId(UUID.fromString(orderLineDto.dishId())),
+                orderLineDto.amount()
+        );
+
+        return ResponseEntity.ok(OrderDto.from(order));
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> findById(@PathVariable final UUID id) {

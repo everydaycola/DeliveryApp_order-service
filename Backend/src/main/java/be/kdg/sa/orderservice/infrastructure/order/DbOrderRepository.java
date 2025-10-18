@@ -23,4 +23,9 @@ public class DbOrderRepository implements OrderRepository {
         return this.jpaOrderRepository.findById(orderId.id())
                 .map(JpaOrderEntity::toDomain);
     }
+
+    @Override public void save(Order order) {
+        JpaOrderEntity jpaOrderEntity = JpaOrderEntity.fromDomain(order);
+        this.jpaOrderRepository.save(jpaOrderEntity);
+    }
 }

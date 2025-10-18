@@ -3,6 +3,7 @@ package be.kdg.sa.orderservice.infrastructure.order.jpa;
 import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
+import be.kdg.sa.orderservice.domain.order.OrderLine;
 import be.kdg.sa.orderservice.domain.order.OrderStatus;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
 import jakarta.persistence.*;
@@ -43,15 +44,22 @@ import java.util.UUID;
     public Order toDomain() {
         Order order = new Order(
                 new OrderId(this.orderId),
+                this.status,
+                this.orderLines.stream()
+                               .map(jpaOrderLine ->
+                                            new OrderLine(
+                                                    jpaOrderLine.getQuantity(),
+                                                    new DishId(jpaOrderLine.getDishId())
+                                            ))
+                               .toList(),
                 new RestaurantId(this.restaurantId)
         );
 
-        order.setStatus(this.status);
-
         this.orderLines.forEach(jpaOrderLine ->
-                order.NewOrderLine(
-                        jpaOrderLine.getQuantity(),
-                        new DishId(jpaOrderLine.getDishId())));
+                order.addOrderLine(
+                        new OrderLine(
+                            jpaOrderLine.getQuantity(),
+                            new DishId(jpaOrderLine.getDishId()))));
 
         return order;
     }
