@@ -3,6 +3,7 @@ package be.kdg.sa.orderservice.infrastructure.order.jpa;
 import be.kdg.sa.orderservice.domain.order.OrderLine;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class JpaOrderLineEntity {
     @Column
     private int quantity;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "orderId", nullable = false)
     private JpaOrderEntity order;

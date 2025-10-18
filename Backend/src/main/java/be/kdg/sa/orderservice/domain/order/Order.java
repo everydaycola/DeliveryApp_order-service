@@ -8,13 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
 @Getter
 public class Order {
     private final OrderId orderId;
     private OrderStatus status;
     private final List <OrderLine> orderLines;
     private final RestaurantId restaurantId;
+
+    public Order(OrderId orderId, OrderStatus status, List<OrderLine> orderLines, RestaurantId restaurantId) {
+        this.orderId = orderId;
+        this.status = status;
+        this.orderLines = new ArrayList<>(orderLines); // Create mutable copy
+        this.restaurantId = restaurantId;
+    }
 
     public Order(RestaurantId restaurantId) {
         this.orderId = new OrderId(UUID.randomUUID());
@@ -29,7 +35,7 @@ public class Order {
                   .findFirst()
                   .ifPresentOrElse(
                           existing -> existing.increaseQuantity(orderLine.getQuantity()),
-                          () -> orderLines.add(orderLine)
+                          () -> this.orderLines.add(orderLine)
                 );
     }
 

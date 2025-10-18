@@ -28,3 +28,12 @@ Content-Type: application/json
 {
   "restaurantId": "{{restaurant1}}"
 }
+
+### Place an order (adding mutiple orders of the same acts weird, does not work yet.)
+POST http://localhost:8080/api/orders/dddaf99d-23bd-40c4-90e3-cfcde0341fbc/add
+Content-Type: application/json
+
+{
+  "amount": 2,
+  "dishId": "{{restaurant1_dish1}}"
+}

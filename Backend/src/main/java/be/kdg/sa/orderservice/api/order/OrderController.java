@@ -1,5 +1,6 @@
 package be.kdg.sa.orderservice.api.order;
 
+import be.kdg.sa.orderservice.api.order.dtos.NewOrderDto;
 import be.kdg.sa.orderservice.api.order.dtos.OrderDto;
 import be.kdg.sa.orderservice.api.order.dtos.OrderLineDto;
 import be.kdg.sa.orderservice.application.OrderService;
@@ -21,16 +22,16 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestParam final UUID restaurantId) {
-        Order order = orders.openNewOrderAt(restaurantId);
+    public ResponseEntity<OrderDto> createOrder(@RequestBody final NewOrderDto newOrderDto) {
+        Order order = orders.openNewOrderAt(UUID.fromString(newOrderDto.restaurantId()));
         return ResponseEntity.ok(OrderDto.from(order));
     }
 
     @PostMapping("/{orderId}/add")
-    public ResponseEntity<OrderDto> addOrder(@PathVariable final UUID restaurantId,
+    public ResponseEntity<OrderDto> addOrder(@PathVariable final UUID orderId,
                                              @RequestBody final OrderLineDto orderLineDto) {
         Order order = orders.addLineToOrder(
-                new OrderId(restaurantId),
+                new OrderId(orderId),
                 new DishId(UUID.fromString(orderLineDto.dishId())),
                 orderLineDto.amount()
         );

@@ -35,7 +35,11 @@ import java.util.UUID;
                 new JpaOrderEntity(order.getOrderId().id(), order.getStatus(), order.getRestaurantId().id());
 
         List <JpaOrderLineEntity> jpaOrderEntities =
-                order.getOrderLines().stream().map(JpaOrderLineEntity::fromDomain).toList();
+                order.getOrderLines()
+                     .stream()
+                     .map(JpaOrderLineEntity::fromDomain)
+                     .toList();
+        jpaOrderEntities.forEach(joe -> joe.setOrder(jpaOrderEntity));
         jpaOrderEntity.setOrderLines(jpaOrderEntities);
 
         return jpaOrderEntity;
