@@ -1,17 +1,25 @@
 @order1=550e8400-e29b-41d4-a716-446655440000
 @order2=550e8400-e29b-41d4-a716-446655440001
+@restaurant1=dab961f7-5441-4827-a55e-7fcbc86a8fb2
+@restaurant1_dish1=27756a48-0b85-4499-aadb-c08a97943263
+@restaurant1_dish2=6c273939-faf5-4eca-988d-08b14533849e
+@restaurant2=7f3037c6-a58d-402b-bcfc-def8157fdbfc
+@restaurant2_dish1=18cb4eec-8ccb-4f65-a20a-dced4e1b0e4b
 
 ### GET request to get an order
 GET http://localhost:8080/api/orders/{{order1}}
 
-### Get a specific restaurant by ID
-GET http://localhost:8080/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2
-
 ### Get all restaurants
 GET http://localhost:8080/api/restaurants
 
+### Get a specific restaurant by ID
+GET http://localhost:8080/api/restaurants/{{restaurant1}}
+
 ### Get the public menu of a restaurant
-GET http://localhost:8081/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2/menu/27756a48-0b85-4499-aadb-c08a97943263
+GET http://localhost:8080/api/restaurants/{{restaurant1}}/menu
 
 ### Get a specific dish from a restaurant
-GET http://localhost:8081/api/restaurants/dab961f7-5441-4827-a55e-7fcbc86a8fb2/menu/
+GET http://localhost:8080/api/restaurants/{{restaurant1}}/menu/{{restaurant1_dish1}}
+
+### Open an new order
+GET http://localhost:8080/api/orders/

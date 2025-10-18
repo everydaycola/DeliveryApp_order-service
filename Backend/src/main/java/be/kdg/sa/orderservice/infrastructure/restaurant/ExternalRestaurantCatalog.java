@@ -81,7 +81,7 @@ import java.util.UUID;
         try {
             final DishResponse response = restClient
                     .get()
-                    .uri("/" + restaurantId.id().toString() + "/menu" + restaurantId.id().toString())
+                    .uri("/" + restaurantId.id().toString() + "/menu/" + dishId.id().toString())
                     .retrieve()
                     .body(DishResponse.class);
 
