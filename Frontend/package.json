@@ -11,5 +11,11 @@
   "devDependencies": {
     "typescript": "~5.8.3",
     "vite": "^7.1.2"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "sass": "^1.93.2"
   }
 }
