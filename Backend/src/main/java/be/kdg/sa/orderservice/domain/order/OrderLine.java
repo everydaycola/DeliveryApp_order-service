@@ -1,9 +1,11 @@
 package be.kdg.sa.orderservice.domain.order;
 
 import be.kdg.sa.orderservice.domain.dish.DishId;
+import lombok.AllArgsConstructor;
 
 import java.util.UUID;
 
+@AllArgsConstructor
 public class OrderLine {
     private final OrderLineId id;
     private int quantity;

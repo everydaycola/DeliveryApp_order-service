@@ -32,7 +32,7 @@ public class JpaOrderLineEntity {
 
     public static JpaOrderLineEntity fromDomain(OrderLine orderLine) {
         return new JpaOrderLineEntity(
-                orderLine.getId().id(),
+                orderLine.getDishId().id(),
                 orderLine.getQuantity()
         );
     }

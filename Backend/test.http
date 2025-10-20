@@ -1,4 +1,4 @@
-@order1=550e8400-e29b-41d4-a716-446655440000
+@order1=4c680fd7-2ac1-41b0-8d33-4fd4e268c7bf
 @order2=550e8400-e29b-41d4-a716-446655440001
 @restaurant1=dab961f7-5441-4827-a55e-7fcbc86a8fb2
 @restaurant1_dish1=27756a48-0b85-4499-aadb-c08a97943263
@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ### Place an order (adding mutiple orders of the same acts weird, does not work yet.)
-POST http://localhost:8080/api/orders/dddaf99d-23bd-40c4-90e3-cfcde0341fbc/add
+POST http://localhost:8080/api/orders/f59f4fb2-fb6a-4a1d-9232-a6da1a44f4f2/add
 Content-Type: application/json
 
 {
