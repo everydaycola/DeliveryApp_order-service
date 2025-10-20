@@ -1,6 +1,7 @@
 package be.kdg.sa.orderservice.domain.order;
 
 public enum OrderStatus {
+    UNCONFIRMED,
     PENDING,
     ACCEPTED,
     DECLINED,

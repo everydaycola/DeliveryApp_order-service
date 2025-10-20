@@ -25,7 +25,7 @@ public class Order {
     public Order(RestaurantId restaurantId) {
         this.orderId = new OrderId(UUID.randomUUID());
         this.restaurantId = restaurantId;
-        this.status = OrderStatus.PENDING;
+        this.status = OrderStatus.UNCONFIRMED;
         this.orderLines = new ArrayList<>();
     }
 
