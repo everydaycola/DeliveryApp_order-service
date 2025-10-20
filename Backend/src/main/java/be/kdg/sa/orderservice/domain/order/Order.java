@@ -1,7 +1,7 @@
 package be.kdg.sa.orderservice.domain.order;
 
+import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -29,24 +29,19 @@ public class Order {
         this.orderLines = new ArrayList<>();
     }
 
-    public void addOrderLine(OrderLine orderLine) {
+    public void addDish(DishId dishId, int amount) {
         this.status.shouldBe(OrderStatus.UNCONFIRMED);
         orderLines.stream()
-                  .filter(ol -> ol.getDishId().equals(orderLine.getDishId()))
-                  .findFirst()
-                  .ifPresentOrElse(
-                          existing -> existing.increaseQuantity(orderLine.getQuantity()),
-                          () -> this.orderLines.add(orderLine)
+                .filter(ol -> ol.getDishId().equals(dishId))
+                .findFirst()
+                .ifPresentOrElse(
+                        existing -> existing.increaseQuantity(amount),
+                        () -> this.orderLines.add(new OrderLine(dishId, amount))
                 );
     }
 
     public void submit(){
         this.status.shouldBe(OrderStatus.UNCONFIRMED);
         this.status = OrderStatus.PENDING;
-    }
-
-    // somewhat temporary
-    public void setStatus(OrderStatus status) {
-        this.status = status;
     }
 }

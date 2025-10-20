@@ -25,8 +25,7 @@ public class OrderService {
 
     public Order addLineToOrder(OrderId orderId, DishId dishId, int amount) {
         Order order = findOrderById(orderId);
-        OrderLine orderLine = new OrderLine(amount, dishId);
-        order.addOrderLine(orderLine);
+        order.addDish(dishId, amount);
         orders.save(order);
         return order;
     }

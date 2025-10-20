@@ -29,13 +29,14 @@ Content-Type: application/json
   "restaurantId": "{{restaurant1}}"
 }
 
-### Place an order (adding mutiple orders of the same acts weird, does not work yet.)
-POST http://localhost:8080/api/orders/f59f4fb2-fb6a-4a1d-9232-a6da1a44f4f2/add
+> {% client.global.set("newOrder", response.body.orderId); %}
+
+### Order multiple dishes via existing order
+POST http://localhost:8080/api/orders/{{newOrder}}/dishes/{{restaurant1_dish1}}
 Content-Type: application/json
 
 {
-  "amount": 2,
-  "dishId": "{{restaurant1_dish1}}"
+  "amount": 2
 }
 
 ### Submit an Order

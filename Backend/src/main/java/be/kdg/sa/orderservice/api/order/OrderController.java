@@ -32,12 +32,13 @@ public class OrderController {
         return ResponseEntity.ok(OrderDto.from(order));
     }
 
-    @PostMapping("/{orderId}/add")
-    public ResponseEntity<OrderDto> addOrder(@PathVariable final UUID orderId,
-                                             @RequestBody final OrderLineDto orderLineDto) {
+    @PostMapping("/{orderId}/dishes/{dishId}")
+    public ResponseEntity<OrderDto> addMultipleOrder(@PathVariable final UUID orderId,
+                                                     @PathVariable final UUID dishId,
+                                                     @RequestBody final OrderLineDto orderLineDto) {
         Order order = orders.addLineToOrder(
                 new OrderId(orderId),
-                new DishId(UUID.fromString(orderLineDto.dishId())),
+                new DishId(dishId),
                 orderLineDto.amount()
         );
 
