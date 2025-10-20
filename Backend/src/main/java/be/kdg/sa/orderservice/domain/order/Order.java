@@ -30,6 +30,7 @@ public class Order {
     }
 
     public void addOrderLine(OrderLine orderLine) {
+        this.status.shouldBe(OrderStatus.UNCONFIRMED);
         orderLines.stream()
                   .filter(ol -> ol.getDishId().equals(orderLine.getDishId()))
                   .findFirst()
@@ -40,11 +41,8 @@ public class Order {
     }
 
     public void submit(){
-        if(this.status == OrderStatus.UNCONFIRMED){
-            this.status = OrderStatus.PENDING;
-        } else {
-            throw new IllegalStateException("Order " + this.orderId + " status is not UNCONFIRMED, cannot be set to PENDING.");
-        }
+        this.status.shouldBe(OrderStatus.UNCONFIRMED);
+        this.status = OrderStatus.PENDING;
     }
 
     // somewhat temporary
