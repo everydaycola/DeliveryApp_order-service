@@ -37,3 +37,6 @@ Content-Type: application/json
   "amount": 2,
   "dishId": "{{restaurant1_dish1}}"
 }
+
+### Submit an Order
+PATCH http://localhost:8080/api/orders/{{order1}}

@@ -39,6 +39,14 @@ public class Order {
                 );
     }
 
+    public void submit(){
+        if(this.status == OrderStatus.UNCONFIRMED){
+            this.status = OrderStatus.PENDING;
+        } else {
+            throw new IllegalStateException("Order " + this.orderId + " status is not UNCONFIRMED, cannot be set to PENDING.");
+        }
+    }
+
     // somewhat temporary
     public void setStatus(OrderStatus status) {
         this.status = status;

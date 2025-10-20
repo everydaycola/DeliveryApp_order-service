@@ -3,7 +3,7 @@ SET session_replication_role = 'replica';
 
 -- accepted order at Pasta Palace
 INSERT INTO orders (status, order_id, restaurant_id)
-VALUES (2, '550e8400-e29b-41d4-a716-446655440000', 'dab961f7-5441-4827-a55e-7fcbc86a8fb2');
+VALUES (0, '550e8400-e29b-41d4-a716-446655440000', 'dab961f7-5441-4827-a55e-7fcbc86a8fb2');
 
 -- Spaghetti Bolognese
 INSERT INTO order_lines (quantity, dish_id, order_id)

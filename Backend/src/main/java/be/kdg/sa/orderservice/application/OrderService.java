@@ -37,4 +37,11 @@ public class OrderService {
         orders.save(order);
         return order;
     }
+
+    public Order submitOrder(OrderId orderId){
+        Order order = findOrderById(orderId);
+        order.submit();
+        orders.save(order);
+        return order;
+    }
 }

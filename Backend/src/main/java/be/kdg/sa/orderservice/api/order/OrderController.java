@@ -7,6 +7,9 @@ import be.kdg.sa.orderservice.application.OrderService;
 import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
+import be.kdg.sa.orderservice.infrastructure.rabbitMQ.RabbitMQTopology;
+import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.HelloMessage;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +19,11 @@ import java.util.UUID;
 @RequestMapping("/api/orders")
 public class OrderController {
     private final OrderService orders;
+    private final RabbitTemplate rabbitTemplate;
 
-    public OrderController(OrderService orders) {
+    public OrderController(OrderService orders, RabbitTemplate rabbitTemplate) {
         this.orders = orders;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @PostMapping
@@ -43,5 +48,12 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> findById(@PathVariable final UUID id) {
         return ResponseEntity.ok(OrderDto.from(orders.findOrderById(new OrderId(id))));
+    }
+
+    @PatchMapping("/{orderId}")
+    public ResponseEntity<OrderDto> submitOrder(@PathVariable final UUID orderId){
+        Order order = orders.submitOrder(new OrderId(orderId));
+        rabbitTemplate.convertAndSend(RabbitMQTopology.KDG_EXCHANGE_NAME, "order.submit", new HelloMessage("Order " + orderId + " submitted"  ));
+        return ResponseEntity.ok(OrderDto.from(order));
     }
 }
