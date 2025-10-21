@@ -11,6 +11,7 @@ public class RabbitMQTopology {
 
     public static final String DELIVERY_QUEUE_NAME = "delivery_queue";
     public static final String RESTAURANT_QUEUE_NAME = "restaurant_queue";
+    public static final String RESTAURANT_ACCEPTED_QUEUE_NAME = "restaurant_accepted_queue";
 
     @Bean
     TopicExchange kdgExchange() {
@@ -28,6 +29,11 @@ public class RabbitMQTopology {
     }
 
     @Bean
+    Queue restaurantAcceptedQueue(){
+        return QueueBuilder.nonDurable(RESTAURANT_ACCEPTED_QUEUE_NAME).build();
+    }
+
+    @Bean
     Binding deliveryQueueToRestaurantExchangeBinding() {
         return BindingBuilder.bind(deliveryQueue()).to(kdgExchange()).with("delivery.*");
     }
@@ -35,5 +41,10 @@ public class RabbitMQTopology {
     @Bean
     Binding restaurantQueueToRestaurantExchangeBinding() {
         return BindingBuilder.bind(restaurantQueue()).to(kdgExchange()).with("restaurant.*");
+    }
+
+    @Bean
+    Binding restaurantAcceptedQueueToRestaurantExchangeBinding() {
+        return BindingBuilder.bind(restaurantAcceptedQueue()).to(kdgExchange()).with("restaurant.accepted");
     }
 }

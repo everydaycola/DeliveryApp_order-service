@@ -55,7 +55,9 @@ public class OrderController {
     public ResponseEntity<OrderDto> submitOrder(@PathVariable final UUID orderId){
         Order order = orders.submitOrder(new OrderId(orderId));
         OrderDto dto = OrderDto.from(order);
+
         rabbitTemplate.convertAndSend(RabbitMQTopology.KDG_EXCHANGE_NAME, "order.submit", new OrderPlacedMessage(dto));
+        
         return ResponseEntity.ok(dto);
     }
 }
