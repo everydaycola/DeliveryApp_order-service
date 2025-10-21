@@ -18,7 +18,7 @@ public class OrderAcceptedMessageHandler {
 
     @RabbitListener(queues = RabbitMQTopology.RESTAURANT_ACCEPTED_QUEUE_NAME)
     void onOrderAcceptedMessageReceived(OrderAcceptedMessage message) {
-        log.info("Order Accepted Message Received: Order={}", message.orderDto().orderId());
+        log.info("Order Accepted Message Received: Order={}", message.orderDto().id());
 
 
     }
