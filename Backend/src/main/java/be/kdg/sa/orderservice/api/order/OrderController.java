@@ -8,7 +8,7 @@ import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
 import be.kdg.sa.orderservice.infrastructure.rabbitMQ.RabbitMQTopology;
-import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.HelloMessage;
+import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.OrderPlacedMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +54,8 @@ public class OrderController {
     @PatchMapping("/{orderId}")
     public ResponseEntity<OrderDto> submitOrder(@PathVariable final UUID orderId){
         Order order = orders.submitOrder(new OrderId(orderId));
-        rabbitTemplate.convertAndSend(RabbitMQTopology.KDG_EXCHANGE_NAME, "order.submit", new HelloMessage("Order " + orderId + " submitted"  ));
-        return ResponseEntity.ok(OrderDto.from(order));
+        OrderDto dto = OrderDto.from(order);
+        rabbitTemplate.convertAndSend(RabbitMQTopology.KDG_EXCHANGE_NAME, "order.submit", new OrderPlacedMessage(dto));
+        return ResponseEntity.ok(dto);
     }
 }

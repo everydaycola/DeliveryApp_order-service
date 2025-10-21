@@ -29,11 +29,11 @@ public class RabbitMQTopology {
 
     @Bean
     Binding deliveryQueueToRestaurantExchangeBinding() {
-        return BindingBuilder.bind(deliveryQueue()).to(kdgExchange()).with("say.delivery.*");
+        return BindingBuilder.bind(deliveryQueue()).to(kdgExchange()).with("delivery.*");
     }
 
     @Bean
     Binding restaurantQueueToRestaurantExchangeBinding() {
-        return BindingBuilder.bind(restaurantQueue()).to(kdgExchange()).with("say.restaurant.*");
+        return BindingBuilder.bind(restaurantQueue()).to(kdgExchange()).with("restaurant.*");
     }
 }
