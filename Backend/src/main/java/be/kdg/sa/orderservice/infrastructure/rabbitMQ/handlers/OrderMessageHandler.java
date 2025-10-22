@@ -36,4 +36,16 @@ public class OrderMessageHandler {
         log.info("Order Ready Message Received: Order={}", message.orderDto().id());
         orderService.readyOrder(new OrderId(message.orderDto().id()));
     }
+
+    @RabbitListener(queues = RabbitMQTopology.ORDER_PICKED_UP_QUEUE_NAME)
+    void onOrderPickedUpMessageReceived(OrderReadyMessage message) {
+        log.info("Order Pick Up Message Received: Order={}", message.orderDto().id());
+        orderService.pickUpOrder(new OrderId(message.orderDto().id()));
+    }
+
+    @RabbitListener(queues = RabbitMQTopology.ORDER_DELIVERED_QUEUE_NAME)
+    void onOrderDeliveredMessageReceived(OrderReadyMessage message) {
+        log.info("Order Delivered Message Received: Order={}", message.orderDto().id());
+        orderService.deliverOrder(new OrderId(message.orderDto().id()));
+    }
 }

@@ -55,4 +55,16 @@ public class OrderService {
         order.ready();
         orders.save(order);
     }
+
+    public void pickUpOrder(OrderId orderId){
+        Order order = findOrderById(orderId);
+        order.pickUpForDelivery();
+        orders.save(order);
+    }
+
+    public void deliverOrder(OrderId orderId){
+        Order order = findOrderById(orderId);
+        order.deliver();
+        orders.save(order);
+    }
 }

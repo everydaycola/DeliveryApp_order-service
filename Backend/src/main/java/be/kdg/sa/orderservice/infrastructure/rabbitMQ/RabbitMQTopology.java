@@ -9,9 +9,11 @@ public class RabbitMQTopology {
 
     public static final String KDG_EXCHANGE_NAME = "kdg_exchange";
 
-    public static final String ORDER_ACCEPTED_QUEUE_NAME= "order_accepted_queue";
-    public static final String ORDER_REJECTED_QUEUE_NAME= "order_rejected_queue";
-    public static final String ORDER_READY_QUEUE_NAME= "order_ready_queue";
+    public static final String ORDER_ACCEPTED_QUEUE_NAME = "order_accepted_queue";
+    public static final String ORDER_REJECTED_QUEUE_NAME = "order_rejected_queue";
+    public static final String ORDER_READY_QUEUE_NAME = "order_ready_queue";
+    public static final String ORDER_PICKED_UP_QUEUE_NAME = "order_picked_up_queue";
+    public static final String ORDER_DELIVERED_QUEUE_NAME = "order_delivered_queue";
 
 
     @Bean
@@ -35,17 +37,37 @@ public class RabbitMQTopology {
     }
 
     @Bean
-    Binding orderAcceptedBinding(){
+    Queue orderPickedUpQueue() {
+        return QueueBuilder.nonDurable(ORDER_PICKED_UP_QUEUE_NAME).build();
+    }
+
+    @Bean
+    Queue orderDeliveredQueue() {
+        return QueueBuilder.nonDurable(ORDER_DELIVERED_QUEUE_NAME).build();
+    }
+
+    @Bean
+    Binding orderAcceptedBinding() {
         return BindingBuilder.bind(orderAcceptedQueue()).to(kdgExchange()).with("order.accepted.#");
     }
 
     @Bean
-    Binding orderRejectedBinding(){
+    Binding orderRejectedBinding() {
         return BindingBuilder.bind(orderRejectedQueue()).to(kdgExchange()).with("order.rejected");
     }
 
     @Bean
-    Binding orderReadyBinding(){
+    Binding orderReadyBinding() {
         return BindingBuilder.bind(orderReadyQueue()).to(kdgExchange()).with("order.ready");
+    }
+
+    @Bean
+    Binding orderPickedUpBinding() {
+        return BindingBuilder.bind(orderPickedUpQueue()).to(kdgExchange()).with("order.pickedUp");
+    }
+
+    @Bean
+    Binding orderDeliveredBinding() {
+        return BindingBuilder.bind(orderDeliveredQueue()).to(kdgExchange()).with("order.delivered");
     }
 }
