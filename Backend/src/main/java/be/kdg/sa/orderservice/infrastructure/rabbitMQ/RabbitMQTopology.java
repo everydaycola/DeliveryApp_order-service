@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQTopology {
 
     public static final String KDG_EXCHANGE_NAME = "kdg_exchange";
-    public static final String ORDER_QUEUE_NAME = "order_queue";
+
+    public static final String ORDER_ACCEPTED_QUEUE_NAME= "order_accepted_queue";
+    public static final String ORDER_REJECTED_QUEUE_NAME= "order_rejected_queue";
+
 
     @Bean
     TopicExchange kdgExchange() {
@@ -16,17 +19,23 @@ public class RabbitMQTopology {
     }
 
     @Bean
-    Queue orderQueue() {
-        return QueueBuilder.nonDurable(ORDER_QUEUE_NAME).build();
+    Queue orderAcceptedQueue() {
+        return QueueBuilder.nonDurable(ORDER_ACCEPTED_QUEUE_NAME).build();
     }
 
     @Bean
-    Binding orderQueueBindingRestaurantEvents(TopicExchange kdgExchange) {
-        return BindingBuilder.bind(orderQueue()).to(kdgExchange).with("restaurant.*");
+    Queue orderRejectedQueue() {
+        return QueueBuilder.nonDurable(ORDER_REJECTED_QUEUE_NAME).build();
     }
 
     @Bean
-    Binding orderQueueBindingDeliveryEvents(TopicExchange kdgExchange) {
-        return BindingBuilder.bind(orderQueue()).to(kdgExchange).with("delivery.*");
+    Binding orderAcceptedBinding(){
+        return BindingBuilder.bind(orderAcceptedQueue()).to(kdgExchange()).with("order.accepted.#");
     }
+
+    @Bean
+    Binding orderRejectedBinding(){
+        return BindingBuilder.bind(orderRejectedQueue()).to(kdgExchange()).with("order.rejected");
+    }
+
 }

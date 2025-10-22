@@ -56,7 +56,7 @@ public class OrderController {
         Order order = orders.submitOrder(new OrderId(orderId));
         OrderDto dto = OrderDto.from(order);
 
-        rabbitTemplate.convertAndSend(RabbitMQTopology.KDG_EXCHANGE_NAME, "order.submit", new OrderPlacedMessage(dto));
+        rabbitTemplate.convertAndSend(RabbitMQTopology.KDG_EXCHANGE_NAME, "order.placed", new OrderPlacedMessage(dto));
         
         return ResponseEntity.ok(dto);
     }
