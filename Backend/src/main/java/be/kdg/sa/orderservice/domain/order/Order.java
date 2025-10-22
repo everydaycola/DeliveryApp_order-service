@@ -59,4 +59,16 @@ public class Order {
         this.status = OrderStatus.READY;
         log.info("Order {} status set to {}", this.orderId.id(),this.status );
     }
+
+    public void pickUpForDelivery(){
+        this.status.shouldBe(OrderStatus.READY);
+        this.status = OrderStatus.IN_DELIVERY;
+        log.info("Order {} status set to {}", this.orderId.id(),this.status );
+    }
+
+    public void deliver(){
+        this.status.shouldBe(OrderStatus.IN_DELIVERY);
+        this.status = OrderStatus.DELIVERED;
+        log.info("Order {} status set to {}", this.orderId.id(),this.status );
+    }
 }

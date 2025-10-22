@@ -3,9 +3,7 @@ package be.kdg.sa.orderservice.infrastructure.rabbitMQ.handlers;
 import be.kdg.sa.orderservice.application.OrderService;
 import be.kdg.sa.orderservice.domain.order.OrderId;
 import be.kdg.sa.orderservice.infrastructure.rabbitMQ.RabbitMQTopology;
-import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.OrderAcceptedMessage;
-import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.OrderReadyMessage;
-import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.OrderRejectedMessage;
+import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -35,5 +33,17 @@ public class OrderMessageHandler {
     void onOrderReadyMessageReceived(OrderReadyMessage message) {
         log.info("Order Ready Message Received: Order={}", message.orderDto().id());
         orderService.readyOrder(new OrderId(message.orderDto().id()));
+    }
+
+    @RabbitListener(queues = RabbitMQTopology.ORDER_PICKED_UP_QUEUE_NAME)
+    void onOrderPickedUpMessageReceived(OrderPickedUpMessage message) {
+        log.info("Order Pick Up Message Received: Order={}", message.orderDto().id());
+        orderService.pickUpOrder(new OrderId(message.orderDto().id()));
+    }
+
+    @RabbitListener(queues = RabbitMQTopology.ORDER_DELIVERED_QUEUE_NAME)
+    void onOrderDeliveredMessageReceived(OrderDeliveredMessage message) {
+        log.info("Order Delivered Message Received: Order={}", message.orderDto().id());
+        orderService.deliverOrder(new OrderId(message.orderDto().id()));
     }
 }
