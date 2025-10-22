@@ -43,4 +43,10 @@ public class OrderService {
         orders.save(order);
         return order;
     }
+
+    public void updateAcceptedOrRejectedOrder(OrderId orderId, boolean isAccepted){
+        Order order = findOrderById(orderId);
+        order.acceptOrReject(isAccepted);
+        orders.save(order);
+    }
 }

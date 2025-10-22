@@ -3,12 +3,14 @@ package be.kdg.sa.orderservice.domain.order;
 import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Getter
+@Slf4j
 public class Order {
     private final OrderId orderId;
     private OrderStatus status;
@@ -43,5 +45,14 @@ public class Order {
     public void submit(){
         this.status.shouldBe(OrderStatus.UNCONFIRMED);
         this.status = OrderStatus.PENDING;
+        log.info("Order {} status set to {}", this.orderId.id(),this.status );
     }
+
+    public void acceptOrReject(boolean accepted){
+        this.status.shouldBe(OrderStatus.PENDING);
+        this.status = accepted ? OrderStatus.ACCEPTED : OrderStatus.DECLINED;
+        log.info("Order {} status set to {}", this.orderId.id(),this.status );
+    }
+
+
 }
