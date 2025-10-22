@@ -11,6 +11,7 @@ public class RabbitMQTopology {
 
     public static final String ORDER_ACCEPTED_QUEUE_NAME= "order_accepted_queue";
     public static final String ORDER_REJECTED_QUEUE_NAME= "order_rejected_queue";
+    public static final String ORDER_READY_QUEUE_NAME= "order_ready_queue";
 
 
     @Bean
@@ -29,6 +30,11 @@ public class RabbitMQTopology {
     }
 
     @Bean
+    Queue orderReadyQueue() {
+        return QueueBuilder.nonDurable(ORDER_READY_QUEUE_NAME).build();
+    }
+
+    @Bean
     Binding orderAcceptedBinding(){
         return BindingBuilder.bind(orderAcceptedQueue()).to(kdgExchange()).with("order.accepted.#");
     }
@@ -38,4 +44,8 @@ public class RabbitMQTopology {
         return BindingBuilder.bind(orderRejectedQueue()).to(kdgExchange()).with("order.rejected");
     }
 
+    @Bean
+    Binding orderReadyBinding(){
+        return BindingBuilder.bind(orderReadyQueue()).to(kdgExchange()).with("order.ready");
+    }
 }

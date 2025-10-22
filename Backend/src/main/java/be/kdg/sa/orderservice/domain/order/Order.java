@@ -54,5 +54,9 @@ public class Order {
         log.info("Order {} status set to {}", this.orderId.id(),this.status );
     }
 
-
+    public void ready(){
+        this.status.shouldBe(OrderStatus.ACCEPTED);
+        this.status = OrderStatus.READY;
+        log.info("Order {} status set to {}", this.orderId.id(),this.status );
+    }
 }
