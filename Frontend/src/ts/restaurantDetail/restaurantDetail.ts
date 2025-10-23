@@ -29,6 +29,7 @@ function fillRestaurantInfoDiv(resto: Restaurant) {
     addressSpan.textContent =
         `${resto.address.street} ${resto.address.number} ${resto.address.postalCode} in ${resto.address.country}`
 
+    openSpan.className = resto.isOpen? "badge bg-success" : "badge bg-warning"
     openSpan.textContent = openTextGenerator(resto.isOpen,resto.openingHours)
 
 }
@@ -64,6 +65,7 @@ function openTextGenerator(open: boolean, openingHours: RestaurantOpeningHours[]
     if (open) {
         return `Open until ${closeTime}`;
     } else if (nowMinutes < openMinutes) {
+
         return `Closed — opens today at ${openTime}`;
     } else {
         // Find next open day

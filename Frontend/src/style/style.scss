@@ -3,3 +3,37 @@
   justify-content: center;
 }
 
+/* Soften all badges */
+.badge {
+  border: 2px solid transparent;
+  opacity: 0.9;
+}
+
+
+
+/* Make colored badges soft */
+/* Soft primary badge */
+.badge.bg-primary {
+  background-color: rgba(13, 110, 253, 0.15) !important;
+  border-color: rgb(13, 110, 253) !important;
+  color: rgb(13, 110, 253) !important;
+}
+
+.badge.bg-success {
+  background-color: rgba(25, 135, 84, 0.15) !important;
+  border-color: rgb(25, 135, 84) !important;
+  color: rgb(25, 135, 84) !important;
+}
+
+.badge.bg-danger {
+  background-color: rgba(220, 53, 69, 0.15) !important;
+  border-color: rgb(220, 53, 69) !important;
+  color: rgb(220, 53, 69) !important;
+}
+
+.badge.bg-warning {
+  background-color: rgba(255, 193, 7, 0.15) !important;
+  border-color: rgb(255, 193, 7) !important;
+  color: rgb(255, 193, 7) !important;
+}
+
