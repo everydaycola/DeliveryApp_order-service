@@ -1,4 +1,6 @@
-import type { Restaurant } from "./model/Restaurant.ts";
+import type { Restaurant } from "../model/restaurant";
+import {showRestaurantDetailModal} from "../restaurantDetail";
+
 
 function createCell(content: string | HTMLElement): HTMLTableCellElement {
     const td = document.createElement("td");
@@ -14,7 +16,8 @@ export function renderRestaurantTable(container: HTMLElement, restaurants: Resta
     container.innerHTML = ""; // Clear container
 
     const table = document.createElement("table");
-    table.className = "table table-striped table-hover table-bordered"; // Bootstrap styling
+    table.className = "table table-striped table-hover table-bordered w-75"; // Bootstrap styling
+    table.id = "restaurants-table"
 
     // Header
     const thead = document.createElement("thead");
@@ -30,12 +33,14 @@ export function renderRestaurantTable(container: HTMLElement, restaurants: Resta
 
     // Body
     const tbody = document.createElement("tbody");
-    restaurants.forEach(r => {
+    restaurants.forEach(resto => {
         const row = document.createElement("tr");
-        row.appendChild(createCell(r.name));
-        row.appendChild(createCell(r.type));
-        row.appendChild(createCell(r.isOpen ? "✅" : "❌"));
-        row.appendChild(createCell(r.priceCriteria));
+        row.appendChild(createCell(resto.name));
+        row.appendChild(createCell(resto.type));
+        row.appendChild(createCell(resto.isOpen ? "✅" : "❌"));
+        row.appendChild(createCell(resto.priceCriteria));
+
+        row.addEventListener('click',() => showRestaurantDetailModal(resto))
         tbody.appendChild(row);
     });
 

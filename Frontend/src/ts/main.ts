@@ -1,6 +1,6 @@
-import '../style/style.css'
+import '../style/style.scss'
 import {getRestaurants} from "./api/orderApi.ts";
-import {renderRestaurantTable} from "./RestaurantsTable.ts";
+import {renderRestaurantTable} from "./restaurantTable";
 
 const restaurants = getRestaurants()
 

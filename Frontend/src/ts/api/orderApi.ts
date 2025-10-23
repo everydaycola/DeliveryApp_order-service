@@ -1,5 +1,5 @@
 import axios from "axios";
-import type {Restaurant} from "../model/Restaurant.ts";
+import type {Restaurant} from "../model/restaurant";
 
 const BASE_URL = 'http://localhost:8080/api/';
 
