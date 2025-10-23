@@ -9,7 +9,8 @@
 <body>
 <nav class="navbar navbar-light navbar-expand-lg bg-light shadow px-3">
     <a class="navbar-brand" href="#">Keep Dishes Going</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -34,7 +35,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body flex-column" id="restaurantDetailBody">
-                <div class="flex flex-row " id="restaurantInfo"></div>
+                <div id="restaurantInfo" class="d-flex justify-content-between align-items-center border rounded p-3 bg-light shadow-sm">
+                    <a id="restaurantEmail" href="mailto:example@example.com" class="text-decoration-none text-primary fw-semibold">email@example.com</a>
+                    <span id="restaurantAddress" class="text-secondary">123 Main Street, City</span>
+                    <span id="restaurantOpen" class="badge bg-success">Open until 22:00</span>
+                </div>
+
                 <div class="flex-column flex-wrap" id="restaurantMenu"></div>
             </div>
         </div>
