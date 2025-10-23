@@ -28,12 +28,13 @@
 <div class="modal fade" id="restaurantDetailModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" id="restaurantDetailHeader">
                 <h5 class="modal-title" id="restaurantDetailTitle"></h5>
+                <span class="badge bg-primary mx-5" id="typeBadge"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body flex-column" id="restaurantDetailBody">
-                <div class="flex-row flex-wrap" id="restaurantInfo"></div>
+                <div class="flex flex-row " id="restaurantInfo"></div>
                 <div class="flex-column flex-wrap" id="restaurantMenu"></div>
             </div>
         </div>
