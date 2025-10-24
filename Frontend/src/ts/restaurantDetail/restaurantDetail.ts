@@ -1,6 +1,7 @@
 import type {Restaurant} from "../model/restaurant";
 import {Modal} from "bootstrap";
 import type {RestaurantOpeningHours} from "../model/restaurant/RestaurantOpeningHours.ts";
+import {showMenu} from "./restaurantMenu.ts";
 
 export function showRestaurantDetailModal(resto: Restaurant): void {
     const title = document.getElementById("restaurantDetailTitle");
@@ -13,6 +14,7 @@ export function showRestaurantDetailModal(resto: Restaurant): void {
     title.textContent = resto.name;
     typeBadge.textContent = resto.type
     fillRestaurantInfoDiv(resto)
+    showMenu(resto.id)
 
     const modal = Modal.getOrCreateInstance(modalEl);
     modal.show();
