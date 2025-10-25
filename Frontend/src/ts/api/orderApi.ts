@@ -1,7 +1,7 @@
 import axios from "axios";
 import type {Restaurant} from "../model/restaurant";
 import type {Dish} from "../model/dish/Dish.ts";
-import type {Order} from "../model/order/Order.ts";
+import type {Order} from "../model/order";
 
 const BASE_URL = 'http://localhost:8080/api/';
 

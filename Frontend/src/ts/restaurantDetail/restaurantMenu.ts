@@ -1,5 +1,8 @@
 import {getMenuOfRestaurant} from "../api/orderApi.ts";
 import type {Dish} from "../model/dish/Dish.ts";
+import type {Orderline} from "../model/order";
+
+const orderLines:Orderline[] = []
 
 export async function showMenu(restautantId: string){
     const menuDiv = document.getElementById("restaurantMenu") as HTMLDivElement
@@ -41,5 +44,32 @@ function createDishCard(dish: Dish): HTMLElement {
         </div>
     `;
 
+    const minusBtn = card.querySelector(".minus-btn") as HTMLButtonElement;
+    const plusBtn = card.querySelector(".plus-btn") as HTMLButtonElement;
+    const quantityEl = card.querySelector(".quantity") as HTMLElement;
+
+    let quantity = 0;
+
+    plusBtn.addEventListener("click", () => {
+        quantity++;
+        quantityEl.textContent = String(quantity);
+    });
+
+    minusBtn.addEventListener("click", () => {
+        if (quantity > 0) {
+            quantity--;
+            quantityEl.textContent = String(quantity);
+        }
+    });
+
     return card;
+}
+
+function addOrderLine(dishId: string, amount: number){
+    const orderLine = orderLines.find((orderLine) => orderLine.dishId == dishId)
+    if (orderLine){
+        orderLine.amount = amount
+    } else {
+        orderLines.push({dishId,amount})
+    }
 }
