@@ -1,8 +1,8 @@
-import {getMenuOfRestaurant} from "../api/orderApi.ts";
+import {addOrderLineToOrder, createOrder, getMenuOfRestaurant} from "../api/orderApi.ts";
 import type {Dish} from "../model/dish/Dish.ts";
-import type {Orderline} from "../model/order";
+import type {OrderLine} from "../model/order";
 
-const orderLines:Orderline[] = []
+const orderLines:OrderLine[] = []
 
 export async function showMenu(restautantId: string){
     const menuDiv = document.getElementById("restaurantMenu") as HTMLDivElement
@@ -17,6 +17,8 @@ export async function showMenu(restautantId: string){
     const submitBtn = document.createElement("button");
     submitBtn.textContent = `Checkout`;
     submitBtn.className = "btn btn-success btn";
+
+    submitBtn.addEventListener("click",()=> submitOrder(restautantId))
 
     buttonWrapper.appendChild(submitBtn)
     menuDiv.appendChild(buttonWrapper);
@@ -53,12 +55,16 @@ function createDishCard(dish: Dish): HTMLElement {
     plusBtn.addEventListener("click", () => {
         quantity++;
         quantityEl.textContent = String(quantity);
+        addOrderLine(dish.id,quantity)
+        console.log(orderLines)
     });
 
     minusBtn.addEventListener("click", () => {
         if (quantity > 0) {
             quantity--;
             quantityEl.textContent = String(quantity);
+            addOrderLine(dish.id,quantity)
+            console.log(orderLines)
         }
     });
 
@@ -72,4 +78,9 @@ function addOrderLine(dishId: string, amount: number){
     } else {
         orderLines.push({dishId,amount})
     }
+}
+
+async function submitOrder(restaurantId: string){
+    const order = await createOrder(restaurantId)
+    orderLines.forEach(ol => addOrderLineToOrder(order.id, ol.dishId, ol))
 }

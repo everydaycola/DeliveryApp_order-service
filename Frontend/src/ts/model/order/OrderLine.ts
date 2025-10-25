@@ -1,4 +1,4 @@
-export type Orderline = {
+export type OrderLine = {
     dishId: string
     amount: number
 }
