@@ -1,6 +1,7 @@
 import axios from "axios";
 import type {Restaurant} from "../model/restaurant";
-import type {Dish} from "../model/Dish/Dish.ts";
+import type {Dish} from "../model/dish/Dish.ts";
+import type {Order} from "../model/order/Order.ts";
 
 const BASE_URL = 'http://localhost:8080/api/';
 
@@ -11,5 +12,10 @@ export async function getRestaurants(){
 
 export async function getMenuOfRestaurant(restaurantId: string){
     const response = await axios.get<Dish[]>(`${BASE_URL}restaurants/${restaurantId}/menu`);
+    return response.data
+}
+
+export async function createOrder(restaurantId: string){
+    const response = await axios.post<Order>(`${BASE_URL}orders`, {restaurantId});
     return response.data
 }

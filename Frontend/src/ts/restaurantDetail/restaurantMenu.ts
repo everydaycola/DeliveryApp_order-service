@@ -1,15 +1,25 @@
 import {getMenuOfRestaurant} from "../api/orderApi.ts";
-import type {Dish} from "../model/Dish/Dish.ts";
+import type {Dish} from "../model/dish/Dish.ts";
 
 export async function showMenu(restautantId: string){
     const menuDiv = document.getElementById("restaurantMenu") as HTMLDivElement
     const menu = await getMenuOfRestaurant(restautantId)
     menuDiv.innerHTML = ""
 
-    menu.forEach(dish => menuDiv.append(createDishCard(dish)))
+    menu.forEach(dish => menuDiv.appendChild(createDishCard(dish)))
+
+    const buttonWrapper = document.createElement("div");
+    buttonWrapper.className = "d-flex justify-content-end mt-3 w-100";
+
+    const submitBtn = document.createElement("button");
+    submitBtn.textContent = `Checkout`;
+    submitBtn.className = "btn btn-success btn";
+
+    buttonWrapper.appendChild(submitBtn)
+    menuDiv.appendChild(buttonWrapper);
 }
 
-export function createDishCard(dish: Dish): HTMLElement {
+function createDishCard(dish: Dish): HTMLElement {
     const card = document.createElement("div");
     card.className = "card shadow-sm m-2 w-100";
     card.style.width = "18rem";
@@ -23,7 +33,7 @@ export function createDishCard(dish: Dish): HTMLElement {
             
             <p class="fw-bold">€${dish.price.toFixed(2)}</p>
             
-            <div class="d-flex justify-content-between align-items-center ">
+            <div class="d-flex justify-content-between align-items-center">
                 <button class="btn btn-outline-secondary btn-sm minus-btn">-</button>
                 <span class="quantity fw-bold mx-3">0</span>
                 <button class="btn btn-outline-secondary btn-sm plus-btn">+</button>
