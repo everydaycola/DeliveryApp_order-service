@@ -10,6 +10,6 @@ export async function getRestaurants(){
 }
 
 export async function getMenuOfRestaurant(restaurantId: string){
-    const response = await axios.get<Dish[]>(`${BASE_URL}restaurants/${restaurantId}`);
+    const response = await axios.get<Dish[]>(`${BASE_URL}restaurants/${restaurantId}/menu`);
     return response.data
 }
