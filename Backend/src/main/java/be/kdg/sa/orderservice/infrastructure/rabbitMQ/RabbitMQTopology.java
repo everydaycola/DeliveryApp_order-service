@@ -1,5 +1,6 @@
 package be.kdg.sa.orderservice.infrastructure.rabbitMQ;
 
+import be.kdg.sa.orderservice.config.RabbitMQProperties;
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,67 +8,89 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQTopology {
 
-    public static final String KDG_EXCHANGE_NAME = "kdg_exchange";
+    private final RabbitMQProperties properties;
 
-    public static final String ORDER_ACCEPTED_QUEUE_NAME = "order_accepted_queue";
-    public static final String ORDER_REJECTED_QUEUE_NAME = "order_rejected_queue";
-    public static final String ORDER_READY_QUEUE_NAME = "order_ready_queue";
-    public static final String ORDER_PICKED_UP_QUEUE_NAME = "order_picked_up_queue";
-    public static final String ORDER_DELIVERED_QUEUE_NAME = "order_delivered_queue";
-
+    public RabbitMQTopology(RabbitMQProperties properties) {
+        this.properties = properties;
+    }
 
     @Bean
     TopicExchange kdgExchange() {
-        return new TopicExchange(KDG_EXCHANGE_NAME);
+        return new TopicExchange(properties.getExchangeName());
     }
 
     @Bean
     Queue orderAcceptedQueue() {
-        return QueueBuilder.nonDurable(ORDER_ACCEPTED_QUEUE_NAME).build();
+        return QueueBuilder
+                .nonDurable(properties.getOrderAcceptedQueue())
+                .build();
     }
 
     @Bean
     Queue orderRejectedQueue() {
-        return QueueBuilder.nonDurable(ORDER_REJECTED_QUEUE_NAME).build();
+        return QueueBuilder
+                .nonDurable(properties.getOrderRejectedQueue())
+                .build();
     }
 
     @Bean
     Queue orderReadyQueue() {
-        return QueueBuilder.nonDurable(ORDER_READY_QUEUE_NAME).build();
+        return QueueBuilder
+                .nonDurable(properties.getOrderReadyQueue())
+                .build();
     }
 
     @Bean
     Queue orderPickedUpQueue() {
-        return QueueBuilder.nonDurable(ORDER_PICKED_UP_QUEUE_NAME).build();
+        return QueueBuilder
+                .nonDurable(properties.getOrderPickedUpQueue())
+                .build();
     }
 
     @Bean
     Queue orderDeliveredQueue() {
-        return QueueBuilder.nonDurable(ORDER_DELIVERED_QUEUE_NAME).build();
+        return QueueBuilder
+                .nonDurable(properties.getOrderDeliveredQueue())
+                .build();
     }
 
     @Bean
     Binding orderAcceptedBinding() {
-        return BindingBuilder.bind(orderAcceptedQueue()).to(kdgExchange()).with("order.accepted.#");
+        return BindingBuilder
+                .bind(orderAcceptedQueue())
+                .to(kdgExchange())
+                .with(properties.getOrderAcceptedBinding());
     }
 
     @Bean
     Binding orderRejectedBinding() {
-        return BindingBuilder.bind(orderRejectedQueue()).to(kdgExchange()).with("order.rejected");
+        return BindingBuilder
+                .bind(orderRejectedQueue())
+                .to(kdgExchange())
+                .with(properties.getOrderRejectedBinding());
     }
 
     @Bean
     Binding orderReadyBinding() {
-        return BindingBuilder.bind(orderReadyQueue()).to(kdgExchange()).with("order.ready");
+        return BindingBuilder
+                .bind(orderReadyQueue())
+                .to(kdgExchange())
+                .with(properties.getOrderReadyBinding());
     }
 
     @Bean
     Binding orderPickedUpBinding() {
-        return BindingBuilder.bind(orderPickedUpQueue()).to(kdgExchange()).with("order.pickedUp");
+        return BindingBuilder
+                .bind(orderPickedUpQueue())
+                .to(kdgExchange())
+                .with(properties.getOrderPickedUpBinding());
     }
 
     @Bean
     Binding orderDeliveredBinding() {
-        return BindingBuilder.bind(orderDeliveredQueue()).to(kdgExchange()).with("order.delivered");
+        return BindingBuilder
+                .bind(orderDeliveredQueue())
+                .to(kdgExchange())
+                .with(properties.getOrderDeliveredBinding());
     }
 }

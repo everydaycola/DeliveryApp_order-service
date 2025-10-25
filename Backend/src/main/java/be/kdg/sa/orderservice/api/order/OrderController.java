@@ -4,10 +4,10 @@ import be.kdg.sa.orderservice.api.order.dtos.NewOrderDto;
 import be.kdg.sa.orderservice.api.order.dtos.OrderDto;
 import be.kdg.sa.orderservice.api.order.dtos.OrderLineDto;
 import be.kdg.sa.orderservice.application.OrderService;
+import be.kdg.sa.orderservice.config.RabbitMQProperties;
 import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
-import be.kdg.sa.orderservice.infrastructure.rabbitMQ.RabbitMQTopology;
 import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.OrderPlacedMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +20,12 @@ import java.util.UUID;
 public class OrderController {
     private final OrderService orders;
     private final RabbitTemplate rabbitTemplate;
+    private final RabbitMQProperties rabbitMQProperties;
 
-    public OrderController(OrderService orders, RabbitTemplate rabbitTemplate) {
+    public OrderController(OrderService orders, RabbitTemplate rabbitTemplate, RabbitMQProperties rabbitMQProperties) {
         this.orders = orders;
         this.rabbitTemplate = rabbitTemplate;
+        this.rabbitMQProperties = rabbitMQProperties;
     }
 
     @PostMapping
@@ -56,7 +58,9 @@ public class OrderController {
         Order order = orders.submitOrder(new OrderId(orderId));
         OrderDto dto = OrderDto.from(order);
 
-        rabbitTemplate.convertAndSend(RabbitMQTopology.KDG_EXCHANGE_NAME, "order.placed", new OrderPlacedMessage(dto));
+        rabbitTemplate.convertAndSend(rabbitMQProperties.getExchangeName(),
+                                      rabbitMQProperties.getOrderPlacedBinding(),
+                                      new OrderPlacedMessage(dto));
         
         return ResponseEntity.ok(dto);
     }
