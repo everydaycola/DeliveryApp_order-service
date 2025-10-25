@@ -1,7 +1,7 @@
 import type {OrderLine} from "./OrderLine.ts";
 
 export type Order = {
-    id: string
+    orderId: string
     restaurantId: string
     status: string
     orderLines: OrderLine[]

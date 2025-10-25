@@ -4,9 +4,9 @@ import type {OrderLine} from "../model/order";
 
 const orderLines:OrderLine[] = []
 
-export async function showMenu(restautantId: string){
+export async function showMenu(restaurantId: string){
     const menuDiv = document.getElementById("restaurantMenu") as HTMLDivElement
-    const menu = await getMenuOfRestaurant(restautantId)
+    const menu = await getMenuOfRestaurant(restaurantId)
     menuDiv.innerHTML = ""
 
     menu.forEach(dish => menuDiv.appendChild(createDishCard(dish)))
@@ -18,7 +18,7 @@ export async function showMenu(restautantId: string){
     submitBtn.textContent = `Checkout`;
     submitBtn.className = "btn btn-success btn";
 
-    submitBtn.addEventListener("click",()=> submitOrder(restautantId))
+    submitBtn.addEventListener("click",()=> submitOrder(restaurantId))
 
     buttonWrapper.appendChild(submitBtn)
     menuDiv.appendChild(buttonWrapper);
@@ -82,5 +82,7 @@ function addOrderLine(dishId: string, amount: number){
 
 async function submitOrder(restaurantId: string){
     const order = await createOrder(restaurantId)
-    orderLines.forEach(ol => addOrderLineToOrder(order.id, ol.dishId, ol))
+    console.log(order)
+    orderLines.forEach(ol => addOrderLineToOrder(order.orderId, ol.dishId, ol))
+    //TODO: Send to restaurant
 }
