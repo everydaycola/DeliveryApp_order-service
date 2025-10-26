@@ -2,7 +2,6 @@ package be.kdg.sa.orderservice.infrastructure.rabbitMQ.handlers;
 
 import be.kdg.sa.orderservice.application.OrderService;
 import be.kdg.sa.orderservice.domain.order.OrderId;
-import be.kdg.sa.orderservice.infrastructure.rabbitMQ.RabbitMQTopology;
 import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class OrderMessageHandler {
-    OrderService orderService;
+    final OrderService orderService;
 
     public OrderMessageHandler(OrderService orderService) {
         this.orderService = orderService;

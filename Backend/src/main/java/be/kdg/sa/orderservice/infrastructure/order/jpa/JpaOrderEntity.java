@@ -4,6 +4,7 @@ import be.kdg.sa.orderservice.domain.dish.DishId;
 import be.kdg.sa.orderservice.domain.order.*;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
 import jakarta.persistence.*;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
     @Column private OrderStatus status;
 
-    @Column @OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL)
+    @Setter @Column @OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL)
     private List <JpaOrderLineEntity> orderLines;
 
     @Column private UUID restaurantId;
@@ -59,7 +60,4 @@ import java.util.UUID;
         );
     }
 
-    public void setOrderLines(List <JpaOrderLineEntity> orderLines) {
-        this.orderLines = orderLines;
-    }
 }
