@@ -2,9 +2,10 @@ import {addOrderLineToOrder, createOrder, getMenuOfRestaurant, submitOrder} from
 import type {Dish} from "../model/dish/Dish.ts";
 import type {OrderLine} from "../model/order";
 
-const orderLines:OrderLine[] = []
+let orderLines:OrderLine[] = []
 
 export async function showMenu(restaurantId: string, isOpen: boolean){
+    orderLines = []
     const menuDiv = document.getElementById("restaurantMenu") as HTMLDivElement
     const menu = await getMenuOfRestaurant(restaurantId)
     menuDiv.innerHTML = ""
