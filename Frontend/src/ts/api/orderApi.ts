@@ -24,3 +24,8 @@ export async function addOrderLineToOrder(orderId: string, dishId :string, order
     const response = await axios.post<Order>(`${BASE_URL}orders/${orderId}/dishes/${dishId}`, orderLine);
     return response.data
 }
+
+export async function submitOrder(orderId: string){
+    const response = await axios.patch<Order>(`${BASE_URL}orders/${orderId}`)
+    return response.data;
+}

@@ -1,10 +1,10 @@
-import {addOrderLineToOrder, createOrder, getMenuOfRestaurant} from "../api/orderApi.ts";
+import {addOrderLineToOrder, createOrder, getMenuOfRestaurant, submitOrder} from "../api/orderApi.ts";
 import type {Dish} from "../model/dish/Dish.ts";
 import type {OrderLine} from "../model/order";
 
 const orderLines:OrderLine[] = []
 
-export async function showMenu(restaurantId: string){
+export async function showMenu(restaurantId: string, isOpen: boolean){
     const menuDiv = document.getElementById("restaurantMenu") as HTMLDivElement
     const menu = await getMenuOfRestaurant(restaurantId)
     menuDiv.innerHTML = ""
@@ -17,8 +17,9 @@ export async function showMenu(restaurantId: string){
     const submitBtn = document.createElement("button");
     submitBtn.textContent = `Checkout`;
     submitBtn.className = "btn btn-success btn";
+    submitBtn.disabled = !isOpen
 
-    submitBtn.addEventListener("click",()=> submitOrder(restaurantId))
+    submitBtn.addEventListener("click",()=> submitNewOrder(restaurantId))
 
     buttonWrapper.appendChild(submitBtn)
     menuDiv.appendChild(buttonWrapper);
@@ -80,9 +81,8 @@ function addOrderLine(dishId: string, amount: number){
     }
 }
 
-async function submitOrder(restaurantId: string){
+async function submitNewOrder(restaurantId: string){
     const order = await createOrder(restaurantId)
-    console.log(order)
     orderLines.forEach(ol => addOrderLineToOrder(order.orderId, ol.dishId, ol))
-    //TODO: Send to restaurant
+    await submitOrder(order.orderId)
 }

@@ -14,7 +14,7 @@ export function showRestaurantDetailModal(resto: Restaurant): void {
     title.textContent = resto.name;
     typeBadge.textContent = resto.type
     fillRestaurantInfoDiv(resto)
-    showMenu(resto.id)
+    showMenu(resto.id, resto.isOpen)
 
     const modal = Modal.getOrCreateInstance(modalEl);
     modal.show();
