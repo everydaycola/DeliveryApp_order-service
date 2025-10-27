@@ -1,4 +1,4 @@
-import {addOrderLineToOrder, createOrder, getMenuOfRestaurant, submitOrder} from "../api/orderApi.ts";
+import {addOrderLineToOrder, createOrder, getMenuOfRestaurant} from "../api/orderApi.ts";
 import type {Dish} from "../model/dish/Dish.ts";
 import type {OrderLine} from "../model/order";
 
@@ -16,7 +16,7 @@ export async function showMenu(restaurantId: string, isOpen: boolean){
     buttonWrapper.className = "d-flex justify-content-end align-items-center mt-3 w-100";
 
     const submitBtn = document.createElement("button");
-    submitBtn.textContent = `Checkout`;
+    submitBtn.textContent = `To Checkout`;
     submitBtn.className = "btn btn-success btn";
     submitBtn.disabled = !isOpen
 
@@ -24,7 +24,7 @@ export async function showMenu(restaurantId: string, isOpen: boolean){
     submitErrorSpan.id = "submitError"
     submitErrorSpan.className = "text-warning mx-3"
 
-    submitBtn.addEventListener("click",()=> submitNewOrder(restaurantId))
+    submitBtn.addEventListener("click",()=> toCheckout(restaurantId, orderLines))
 
     buttonWrapper.appendChild(submitErrorSpan)
     buttonWrapper.appendChild(submitBtn)
@@ -87,13 +87,16 @@ function addOrderLine(dishId: string, amount: number){
     }
 }
 
-async function submitNewOrder(restaurantId: string){
+async function toCheckout(restaurantId: string ,orderLines: OrderLine[]){
     const errorSpan = document.getElementById("submitError") as HTMLSpanElement
     if (orderLines.length == 0) {
         errorSpan.innerText = "Please add an item to your order before checking out"
         return
     }
+
     const order = await createOrder(restaurantId)
-    orderLines.forEach(ol => addOrderLineToOrder(order.orderId, ol.dishId, ol))
-    await submitOrder(order.orderId)
+    await Promise.all(orderLines.map(ol =>
+        addOrderLineToOrder(order.orderId, ol.dishId, ol)
+    ));
+    window.location.href= `/checkout?restaurantId=${restaurantId}&orderId=${order.orderId}`;
 }
