@@ -12,15 +12,20 @@ export async function showMenu(restaurantId: string, isOpen: boolean){
     menu.forEach(dish => menuDiv.appendChild(createDishCard(dish)))
 
     const buttonWrapper = document.createElement("div");
-    buttonWrapper.className = "d-flex justify-content-end mt-3 w-100";
+    buttonWrapper.className = "d-flex justify-content-end align-items-center mt-3 w-100";
 
     const submitBtn = document.createElement("button");
     submitBtn.textContent = `Checkout`;
     submitBtn.className = "btn btn-success btn";
     submitBtn.disabled = !isOpen
 
+    const submitErrorSpan = document.createElement("span")
+    submitErrorSpan.id = "submitError"
+    submitErrorSpan.className = "text-warning mx-3"
+
     submitBtn.addEventListener("click",()=> submitNewOrder(restaurantId))
 
+    buttonWrapper.appendChild(submitErrorSpan)
     buttonWrapper.appendChild(submitBtn)
     menuDiv.appendChild(buttonWrapper);
 }
@@ -82,6 +87,11 @@ function addOrderLine(dishId: string, amount: number){
 }
 
 async function submitNewOrder(restaurantId: string){
+    const errorSpan = document.getElementById("submitError") as HTMLSpanElement
+    if (orderLines.length == 0) {
+        errorSpan.innerText = "Please add an item to your order before checking out"
+        return
+    }
     const order = await createOrder(restaurantId)
     orderLines.forEach(ol => addOrderLineToOrder(order.orderId, ol.dishId, ol))
     await submitOrder(order.orderId)
