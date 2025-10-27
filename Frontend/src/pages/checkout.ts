@@ -1,10 +1,7 @@
-import {submitOrder} from "../ts/api/orderApi.ts";
+import {getDish, getOrder, submitOrder} from "../ts/api/orderApi.ts";
+import type {Dish} from "../ts/model/dish/Dish.ts";
 
-const params = new URLSearchParams(window.location.search);
-const restaurantId = params.get("restaurantId");
-const orderId = params.get("orderId") as string;
-
-export function renderCheckoutPage() {
+export async function renderCheckoutPage() {
     const params = new URLSearchParams(window.location.search);
     const restaurantId = params.get("restaurantId");
     const orderId = params.get("orderId");
@@ -15,18 +12,35 @@ export function renderCheckoutPage() {
         return;
     }
 
+    const order = await getOrder(orderId)
+    const dishes: Dish[] = await Promise.all(order.orderLines.map(ol => getDish(restaurantId,ol.dishId)));
+
+    const total = dishes.reduce(
+        (sum, d, currentIndex) => sum + d.price * order.orderLines[currentIndex].amount,
+        0);
+
     document.getElementById("app")!.innerHTML = `
         <div class="container py-4">
             <h2>Checkout</h2>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Ordered Dishes</h5>
+                    <ul class="list-group list-group-flush" id="dishList"></ul>
+                    <div class="mt-3 text-end fw-bold fs-5">
+                        Total: €${total.toFixed(2)}
+                    </div>
+                </div>
+            </div>
 
             <form id="checkoutForm">
                 <div class="mb-3">
-                  <label class="form-label">Naam</label>
+                  <label class="form-label">Name</label>
                   <input type="text" id="name" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                  <label class="form-label">Leveradres</label>
+                  <label class="form-label">Address</label>
                   <input type="text" id="address" class="form-control" required>
                 </div>
 
@@ -36,16 +50,31 @@ export function renderCheckoutPage() {
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="checkoutBtn">
-                  Plaats bestelling
+                  Palace Order
                 </button>
             </form>
 
             <div id="finalDetails" class="mt-4 d-none">
-                <h5>Bestelling bevestigd</h5>
+                <h5>Order Placed</h5>
                 <p id="finalText"></p>
             </div>
         </div>
     `;
+
+    // Fill the list
+    const list = document.getElementById("dishList")!;
+    dishes.forEach((d, index) => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `
+            <div>
+                <strong>${d.name}</strong><br>
+                <small>€${d.price.toFixed(2)} × ${order.orderLines[index].amount}</small>
+            </div>
+            <span class="badge bg-secondary">€${(d.price * order.orderLines[index].amount).toFixed(2)}</span>
+        `;
+        list.appendChild(li);
+    });
 
     const form = document.getElementById("checkoutForm")!;
     const finalBlock = document.getElementById("finalDetails")!;
@@ -59,14 +88,14 @@ export function renderCheckoutPage() {
         const email = (document.getElementById("email") as HTMLInputElement).value;
 
         form.querySelectorAll("input").forEach(i => i.setAttribute("disabled", "true"));
-        const btn = document.getElementById("checkoutBtn") as HTMLButtonElement;
-        btn.disabled = true;
+        const submitBtn = document.getElementById("checkoutBtn") as HTMLButtonElement;
+        submitBtn.addEventListener("click",() => submitNewOrder(orderId));
 
         finalText.innerHTML = `
-            Naam: ${name}<br>
-            Leveradres: ${address}<br>
+            Name: ${name}<br>
+            Address: ${address}<br>
             E-mail: ${email}<br>
-            ☑️ Bestelling is nu definitief!
+            ☑️ Your order has been placed!
         `;
 
         finalBlock.classList.remove("d-none");
@@ -74,6 +103,6 @@ export function renderCheckoutPage() {
 }
 
 
-async function submitNewOrder(){
+async function submitNewOrder(orderId: string){
     await submitOrder(orderId)
 }

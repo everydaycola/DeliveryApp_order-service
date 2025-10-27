@@ -5,27 +5,37 @@ import type {Order, OrderLine} from "../model/order";
 
 const BASE_URL = 'http://localhost:8080/api/';
 
-export async function getRestaurants(){
-        const response = await axios.get<Restaurant[]>(`${BASE_URL}restaurants`);
-        return response.data
+export async function getRestaurants() {
+    const response = await axios.get<Restaurant[]>(`${BASE_URL}restaurants`);
+    return response.data
 }
 
-export async function getMenuOfRestaurant(restaurantId: string){
+export async function getMenuOfRestaurant(restaurantId: string) {
     const response = await axios.get<Dish[]>(`${BASE_URL}restaurants/${restaurantId}/menu`);
     return response.data
 }
 
-export async function createOrder(restaurantId: string){
+export async function getOrder(orderId: string) {
+    const response = await axios.get<Order>(`${BASE_URL}orders/${orderId}`);
+    return response.data
+}
+
+export async function getDish(restaurantId: string, dishId: string){
+    const response = await axios.get<Dish>(`${BASE_URL}restaurants/${restaurantId}/menu/${dishId}`);
+    return response.data
+}
+
+export async function createOrder(restaurantId: string) {
     const response = await axios.post<Order>(`${BASE_URL}orders`, {restaurantId});
     return response.data
 }
 
-export async function addOrderLineToOrder(orderId: string, dishId :string, orderLine: OrderLine){
+export async function addOrderLineToOrder(orderId: string, dishId: string, orderLine: OrderLine) {
     const response = await axios.post<Order>(`${BASE_URL}orders/${orderId}/dishes/${dishId}`, orderLine);
     return response.data
 }
 
-export async function submitOrder(orderId: string){
+export async function submitOrder(orderId: string) {
     const response = await axios.patch<Order>(`${BASE_URL}orders/${orderId}`)
     return response.data;
 }
