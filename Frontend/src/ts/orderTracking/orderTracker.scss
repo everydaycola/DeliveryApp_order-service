@@ -1,0 +1,34 @@
+.steps {
+  position: relative;
+}
+
+.steps::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #dee2e6;
+  z-index: 0;
+}
+
+.step {
+  position: relative;
+}
+
+.circle {
+  width: 24px;
+  height: 24px;
+  background: #dee2e6;
+  border-radius: 50%;
+  margin: 0 auto 4px auto;
+  border: 2px solid #6c757d;
+  z-index: 1;
+  position: relative;
+}
+
+.circle.completed {
+  background: #0d6efd;
+  border-color: #0d6efd;
+}

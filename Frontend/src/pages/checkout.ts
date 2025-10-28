@@ -1,5 +1,7 @@
 import {getDish, getOrder, submitOrder} from "../ts/api/orderApi.ts";
 import type {Dish} from "../ts/model/dish/Dish.ts";
+import {renderStatusTracker} from "../ts/orderTracking";
+import {OrderStatus, type OrderStatusType} from "../ts/model/order";
 
 export async function renderCheckoutPage() {
     const params = new URLSearchParams(window.location.search);
@@ -57,6 +59,7 @@ export async function renderCheckoutPage() {
             <div id="finalDetails" class="mt-4 d-none">
                 <h5>Order Placed</h5>
                 <p id="finalText"></p>
+                <div id="orderStatusTracker" class="mt-4"></div>
             </div>
         </div>
     `;
@@ -80,23 +83,39 @@ export async function renderCheckoutPage() {
     const finalBlock = document.getElementById("finalDetails")!;
     const finalText = document.getElementById("finalText")!;
 
-    form.addEventListener("submit", (ev) => {
+    form.addEventListener("submit", async (ev) => {
         ev.preventDefault();
 
         const name = (document.getElementById("name") as HTMLInputElement).value;
         const address = (document.getElementById("address") as HTMLInputElement).value;
         const email = (document.getElementById("email") as HTMLInputElement).value;
 
+        // Disable form inputs after submitting
         form.querySelectorAll("input").forEach(i => i.setAttribute("disabled", "true"));
-        const submitBtn = document.getElementById("checkoutBtn") as HTMLButtonElement;
-        submitBtn.addEventListener("click",() => submitNewOrder(orderId));
+        (document.getElementById("checkoutBtn") as HTMLButtonElement).disabled = true;
+
+        // ✅ Actually submit order to backend here
+        await submitNewOrder(orderId);
 
         finalText.innerHTML = `
-            Name: ${name}<br>
-            Address: ${address}<br>
-            E-mail: ${email}<br>
-            ☑️ Your order has been placed!
-        `;
+        Name: ${name}<br>
+        Address: ${address}<br>
+        E-mail: ${email}<br>
+        ✅ Your order has been placed!
+    `;
+
+        const statusContainer = document.getElementById("orderStatusTracker")!;
+        statusContainer.innerHTML = renderStatusTracker(order.status as OrderStatusType);
+
+        if (order.status === OrderStatus.DECLINED) {
+            statusContainer.innerHTML = `
+        <div class="container py-4">
+            <div class="alert alert-danger">
+                ❌ Your order was declined
+            </div>
+        </div>`;
+            return;
+        }
 
         finalBlock.classList.remove("d-none");
     });

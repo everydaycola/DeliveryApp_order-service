@@ -5,6 +5,16 @@ import {renderCheckoutPage} from "../pages/checkout.ts";
 
 const restaurants = getRestaurants()
 
+function handleNavClick(e: MouseEvent) {
+    const target = e.target as HTMLAnchorElement;
+
+    if (target.tagName === "A" && target.getAttribute("href")?.startsWith("/")) {
+        e.preventDefault();
+        history.pushState({}, "", target.href);
+        route();
+    }
+}
+
 async function route() {
     const appDiv = document.getElementById("app") as HTMLDivElement
 
@@ -26,8 +36,10 @@ async function route() {
     }
 }
 
-route();
+document.addEventListener("click", handleNavClick);
 window.addEventListener("popstate", route);
+
+route();
 
 
 
