@@ -1,8 +1,8 @@
 package be.kdg.sa.orderservice.api.order;
 
 import be.kdg.sa.orderservice.api.order.dtos.NewOrderDto;
+import be.kdg.sa.orderservice.api.order.dtos.NewOrderLineDto;
 import be.kdg.sa.orderservice.api.order.dtos.OrderDto;
-import be.kdg.sa.orderservice.api.order.dtos.OrderLineDto;
 import be.kdg.sa.orderservice.application.OrderService;
 import be.kdg.sa.orderservice.config.RabbitMQProperties;
 import be.kdg.sa.orderservice.domain.dish.DishId;
@@ -38,11 +38,11 @@ public class OrderController {
     @PostMapping("/{orderId}/dishes/{dishId}")
     public ResponseEntity<OrderDto> addMultipleOrder(@PathVariable final UUID orderId,
                                                      @PathVariable final UUID dishId,
-                                                     @RequestBody final OrderLineDto orderLineDto) {
+                                                     @RequestBody final NewOrderLineDto newOrderLineDto) {
         Order order = orders.addLineToOrder(
                 new OrderId(orderId),
                 new DishId(dishId),
-                orderLineDto.amount()
+                newOrderLineDto.amount()
         );
 
         return ResponseEntity.ok(OrderDto.from(order));
