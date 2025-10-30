@@ -52,7 +52,7 @@ export async function renderCheckoutPage() {
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="checkoutBtn">
-                  Palace Order
+                  Place order
                 </button>
             </form>
 
