@@ -1,0 +1,120 @@
+@orderService=localhost:8080
+@restaurantService=localhost:8081
+@deliveryService=localhost:8082
+@keycloacService=localhost:8180
+@clientId=GXg3zjaA8qrRFWFU06yhLrvLVI877xYE
+
+# grill menu
+@grill=11111111-2222-3333-4444-555555555555
+
+@classicCheeseburger=aa111111-2222-3333-4444-555555555551
+@grillmasterRibs=aa111111-2222-3333-4444-555555555552
+@chickenWings=aa111111-2222-3333-4444-555555555553
+
+# grill owner auth
+@grillOwner3=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+@grillOwner3username=jamesgarfield
+@grillOwner3password=owner
+
+# courier auth
+@courier1username=iljanachtergaele
+@courier1password=courier
+
+### GET to see all the restaurant
+GET http://{{orderService}}/api/restaurants
+
+### GET the menu of the 24/7 grill
+GET http://{{orderService}}/api/restaurants/{{grill}}/menu
+
+### POST to start a new order
+POST http://{{orderService}}/api/orders
+Content-Type: application/json
+
+{
+  "restaurantId": "{{grill}}"
+}
+
+> {%
+    client.global.set("orderId", response.body.orderId);
+%}
+
+### Order multiple dishes via existing order
+POST http://{{orderService}}/api/orders/{{orderId}}/dishes/{{classicCheeseburger}}
+Content-Type: application/json
+
+{
+  "amount": 2
+}
+
+### Order multiple dishes via existing order
+POST http://{{orderService}}/api/orders/{{orderId}}/dishes/{{classicCheeseburger}}
+Content-Type: application/json
+
+{
+  "amount": 1
+}
+
+### Order multiple dishes via existing order
+POST http://{{orderService}}/api/orders/{{orderId}}/dishes/{{chickenWings}}
+Content-Type: application/json
+
+{
+  "amount": 16
+}
+
+### Submit an Order
+PATCH http://{{orderService}}/api/orders/{{orderId}}
+
+### see your order
+GET http://{{orderService}}/api/orders/{{orderId}}
+
+### log in as restaurant
+POST http://localhost:8180/realms/keepdishesgoing/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=keepdishesgoing&client_secret={{clientId}}&username={{grillOwner3username}}&password={{grillOwner3password}}&grant_type=password&scope=openid
+
+> {%
+    client.global.set("access_token_owner3", response.body.access_token);
+
+%}
+
+
+### PATCH accept pending order as restaurant
+# todo Get pending orders as restaurant before this
+PATCH http://{{restaurantService}}/api/restaurants/{{grill}}/orders/{{orderId}}/accept
+
+### log in on delivery as a courier
+POST http://{{keycloacService}}/realms/keepdishesgoing/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=keepdishesgoing&client_secret={{clientId}}&username={{courier1username}}&password={{courier1password}}&grant_type=password&scope=openid
+
+> {%
+    client.global.set("access_token_courier1", response.body.access_token);
+%}
+
+### GET request for all unclaimed deliveries
+GET http://{{deliveryService}}/api/deliveries/unclaimed
+Authorization: Bearer {{access_token_courier1}}
+
+> {%
+    // get the order we just placed, store the deliveryId of that order
+    client.global.set("deliveryId", response.body.find(d => d.orderId === client.global.get("orderId")).id);
+%}
+
+### PATCH request to claim the delivery
+POST http://{{deliveryService}}/api/deliveries/{{deliveryId}}/claim
+Authorization: Bearer {{access_token_courier1}}
+
+### PATCH restaurant sets the order as ready
+PATCH http://{{restaurantService}}/api/restaurants/{{grill}}/orders/{{orderId}}/ready
+Authorization: Bearer {{access_token_owner3}}
+
+### PATCH request to claim the delivery
+POST http://{{deliveryService}}/api/deliveries/{{deliveryId}}/pickup
+Authorization: Bearer {{access_token_courier1}}
+
+### PATCH request to claim the delivery
+POST http://{{deliveryService}}/api/deliveries/{{deliveryId}}/deliver
+Authorization: Bearer {{access_token_courier1}}
