@@ -1,14 +1,12 @@
 package be.kdg.sa.orderservice.domain.order;
 
-import be.kdg.sa.orderservice.domain.NotFoundException;
+import org.jmolecules.ddd.annotation.ValueObject;
 
 import java.util.UUID;
 
+@ValueObject
 public record OrderLineId(UUID id) {
     public static OrderLineId create() {
         return new OrderLineId(UUID.randomUUID());
     }
-
-    public NotFoundException notFound() {
-        return new NotFoundException("OrderLine [" + id + "] not found");
-    }}
+}

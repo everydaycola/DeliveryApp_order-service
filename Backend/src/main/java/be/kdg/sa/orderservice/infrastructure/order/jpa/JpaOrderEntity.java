@@ -1,6 +1,6 @@
 package be.kdg.sa.orderservice.infrastructure.order.jpa;
 
-import be.kdg.sa.orderservice.domain.dish.DishId;
+import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
 import be.kdg.sa.orderservice.domain.order.*;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
 import jakarta.persistence.*;

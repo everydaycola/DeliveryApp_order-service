@@ -1,7 +1,7 @@
 package be.kdg.sa.orderservice.domain.restaurant;
 
-import be.kdg.sa.orderservice.domain.dish.Dish;
-import be.kdg.sa.orderservice.domain.dish.DishId;
+import be.kdg.sa.orderservice.domain.restaurant.dish.Dish;
+import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
 
 import java.util.List;
 import java.util.Optional;

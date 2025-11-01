@@ -1,13 +1,15 @@
 package be.kdg.sa.orderservice.domain.order;
 
-import be.kdg.sa.orderservice.domain.dish.DishId;
+import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jmolecules.ddd.annotation.Entity;
 
 import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
+@Entity
 public class OrderLine {
     private final OrderLineId id;
     private int quantity;

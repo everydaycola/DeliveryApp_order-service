@@ -1,15 +1,13 @@
 package be.kdg.sa.orderservice.domain.restaurant;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import org.jmolecules.ddd.annotation.ValueObject;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-@Getter
-@AllArgsConstructor
-public class RestaurantOpeningHours {
-    private DayOfWeek day;
-    private LocalTime openingTime;
-    private LocalTime closingTime;
-}
+@ValueObject
+public record RestaurantOpeningHours (
+    DayOfWeek day,
+    LocalTime openingTime,
+    LocalTime closingTime
+) {}

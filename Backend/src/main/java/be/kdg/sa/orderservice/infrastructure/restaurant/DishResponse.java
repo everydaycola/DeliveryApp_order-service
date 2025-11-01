@@ -1,10 +1,12 @@
 package be.kdg.sa.orderservice.infrastructure.restaurant;
 
-import be.kdg.sa.orderservice.domain.dish.Dish;
-import be.kdg.sa.orderservice.domain.dish.DishId;
+import be.kdg.sa.orderservice.domain.restaurant.dish.Dish;
+import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
+import org.jmolecules.ddd.annotation.ValueObject;
 
 import java.util.UUID;
 
+@ValueObject
 record DishResponse(
         String id,
         String name,

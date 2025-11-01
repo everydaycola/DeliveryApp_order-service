@@ -1,12 +1,15 @@
 package be.kdg.sa.orderservice.infrastructure.restaurant;
 
 import be.kdg.sa.orderservice.domain.restaurant.*;
+import be.kdg.sa.orderservice.domain.restaurant.Address;
+import org.jmolecules.ddd.annotation.ValueObject;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
+@ValueObject
 record RestaurantResponse(
         String id,
         String name,
@@ -38,7 +41,7 @@ record RestaurantResponse(
                                      )
                         )
                         .toList(),
-                PriceCriteria.valueOf(this.priceCriteria),
+                PriceCriteria.fromDescription(this.priceCriteria),
                 this.logo,
                 Boolean.parseBoolean(this.isOpen)
         );
