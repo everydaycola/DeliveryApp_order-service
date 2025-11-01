@@ -1,14 +1,16 @@
 package be.kdg.sa.orderservice.infrastructure.restaurant;
 
+import be.kdg.sa.orderservice.domain.restaurant.Restaurant;
+import be.kdg.sa.orderservice.domain.restaurant.RestaurantCatalog;
+import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
 import be.kdg.sa.orderservice.domain.restaurant.dish.Dish;
 import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
-import be.kdg.sa.orderservice.domain.restaurant.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClient;
-import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +51,7 @@ public class ExternalRestaurantCatalog implements RestaurantCatalog {
     @Override public Optional <Restaurant> findByIdWithMenuAndOpeningHours(RestaurantId restaurantId) {
         log.info("Finding restaurant with id {}", restaurantId);
         try {
-            final RestaurantResponse response = restClient
+            final var response = restClient
                     .get()
                     .uri("/" + restaurantId.id().toString())
                     .retrieve()
@@ -95,7 +97,7 @@ public class ExternalRestaurantCatalog implements RestaurantCatalog {
     @Override public Optional <Dish> findDishById(RestaurantId restaurantId, DishId dishId) {
         log.info("Finding dish with id {} for restaurant with id {}", dishId, restaurantId);
         try {
-            final DishResponse response = restClient
+            final var response = restClient
                     .get()
                     .uri("/" + restaurantId.id().toString() + "/menu/" + dishId.id().toString())
                     .retrieve()

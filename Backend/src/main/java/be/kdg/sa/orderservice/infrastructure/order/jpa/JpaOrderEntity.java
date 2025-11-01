@@ -1,8 +1,8 @@
 package be.kdg.sa.orderservice.infrastructure.order.jpa;
 
-import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
 import be.kdg.sa.orderservice.domain.order.*;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
+import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
 import jakarta.persistence.*;
 import lombok.Setter;
 
@@ -29,10 +29,10 @@ import java.util.UUID;
     }
 
     public static JpaOrderEntity fromDomain(Order order) {
-        JpaOrderEntity jpaOrderEntity =
+        final var jpaOrderEntity =
                 new JpaOrderEntity(order.getOrderId().id(), order.getStatus(), order.getRestaurantId().id());
 
-        List <JpaOrderLineEntity> jpaOrderEntities =
+        final var jpaOrderEntities =
                 order.getOrderLines()
                      .stream()
                      .map(JpaOrderLineEntity::fromDomain)

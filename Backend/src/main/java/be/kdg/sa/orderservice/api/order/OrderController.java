@@ -5,9 +5,8 @@ import be.kdg.sa.orderservice.api.order.dtos.NewOrderLineDto;
 import be.kdg.sa.orderservice.api.order.dtos.OrderDto;
 import be.kdg.sa.orderservice.application.OrderService;
 import be.kdg.sa.orderservice.config.RabbitMQProperties;
-import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
-import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
+import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
 import be.kdg.sa.orderservice.infrastructure.rabbitMQ.messages.OrderPlacedMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -34,7 +33,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody final NewOrderDto newOrderDto) {
         log.info("Creating new order for restaurant {}", newOrderDto.restaurantId());
-        Order order = orders.openNewOrderAt(UUID.fromString(newOrderDto.restaurantId()));
+        final var order = orders.openNewOrderAt(UUID.fromString(newOrderDto.restaurantId()));
         return ResponseEntity.ok(OrderDto.from(order));
     }
 
@@ -43,7 +42,7 @@ public class OrderController {
                                                      @PathVariable final UUID dishId,
                                                      @RequestBody final NewOrderLineDto newOrderLineDto) {
         log.info("Adding dish {} to order {}", dishId, orderId);
-        Order order = orders.addLineToOrder(
+        final var order = orders.addLineToOrder(
                 new OrderId(orderId),
                 new DishId(dishId),
                 newOrderLineDto.amount()
@@ -62,8 +61,8 @@ public class OrderController {
     @PatchMapping("/{orderId}")
     public ResponseEntity<OrderDto> submitOrder(@PathVariable final UUID orderId){
         log.info("Submitting order {}", orderId);
-        Order order = orders.submitOrder(new OrderId(orderId));
-        OrderDto dto = OrderDto.from(order);
+        final var order = orders.submitOrder(new OrderId(orderId));
+        final var dto = OrderDto.from(order);
 
         rabbitTemplate.convertAndSend(rabbitMQProperties.getExchangeName(),
                                       rabbitMQProperties.getOrderPlacedBinding(),

@@ -1,7 +1,7 @@
 package be.kdg.sa.orderservice.domain.order;
 
-import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
+import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jmolecules.ddd.annotation.Entity;

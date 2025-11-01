@@ -1,7 +1,6 @@
 package be.kdg.sa.orderservice.infrastructure.restaurant;
 
 import be.kdg.sa.orderservice.domain.restaurant.*;
-import be.kdg.sa.orderservice.domain.restaurant.Address;
 import org.jmolecules.ddd.annotation.ValueObject;
 
 import java.time.DayOfWeek;

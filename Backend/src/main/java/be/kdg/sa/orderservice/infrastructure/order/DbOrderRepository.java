@@ -29,7 +29,7 @@ public class DbOrderRepository implements OrderRepository {
 
     @Override public void save(Order order) {
         log.info("saving order: {}", order.getOrderId().id());
-        JpaOrderEntity jpaOrderEntity = JpaOrderEntity.fromDomain(order);
+        final var jpaOrderEntity = JpaOrderEntity.fromDomain(order);
         this.jpaOrderRepository.save(jpaOrderEntity);
     }
 }
