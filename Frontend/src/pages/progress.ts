@@ -2,11 +2,14 @@ import {getDish, getOrder} from "../ts/api/orderApi.ts";
 import type {Dish} from "../ts/model/dish/Dish.ts";
 import {OrderStatus} from "../ts/model/order";
 import {renderStatusTracker} from "../ts/orderTracking";
+import {loadStripe} from "@stripe/stripe-js";
 
 export async function renderProgressPage() {
     const params = new URLSearchParams(globalThis.location.search);
     const restaurantId = params.get("restaurantId");
     const orderId = params.get("orderId");
+    const clientSecret = params.get("payment_intent_client_secret");
+
 
     if (!restaurantId || !orderId) {
         document.getElementById("app")!.innerHTML =
@@ -63,13 +66,23 @@ export async function renderProgressPage() {
     const name = order.contactInfo.name;
     const address = order.contactInfo.address;
     const email = order.contactInfo.contactEmail;
+    if (clientSecret) {
+        const stripe = await loadStripe("pk_test_51SNqJPAwP2c5LObC0xL6XWjtSC1AqKZlTVzyxD9a5NTb6zOuHkptB76zFmIvwSKIucrmVQm47s9Z4olT20FH0Cfk0017SaDwa4");
+        const {paymentIntent} = await stripe!.retrievePaymentIntent(clientSecret);
 
-    finalText.innerHTML = `
-    Name: ${name}<br>
-    Address: ${address}<br>
-    E-mail: ${email}<br>
-    ✅ Your order has been placed!
-    `;
+        if (paymentIntent!.status === "succeeded") {
+            console.log("✅ Payment succeeded, marking order as paid");
+            finalText.innerHTML = `
+                Name: ${name}<br>
+                Address: ${address}<br>
+                E-mail: ${email}<br>
+                ✅ Your order has been placed!
+                    `;
+        } else {
+            console.warn("⚠️ Payment not successful yet:", paymentIntent!.status);
+            paymentFailed()
+        }
+    }
 
     const statusContainer = document.getElementById("orderStatusTracker")!;
 
@@ -111,5 +124,16 @@ export async function renderProgressPage() {
                 clearInterval(statusRefreshInterval); // Stop refreshing if the order is declined
             }
         }
+    }
+
+    function paymentFailed() {
+        finalText.innerHTML = `
+                    <div class="container py-4">
+                        <div class="container py-4">
+                            <div class="alert alert-danger">
+                                ❌ Your Payment has failed<br>
+                            </div>
+                        </div>
+                    </div>`
     }
 }
