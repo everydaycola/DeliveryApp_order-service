@@ -19,13 +19,13 @@ public class OrderMessageHandler {
     @RabbitListener(queues = "${spring.rabbitmq.kdg.order-accepted-queue}")
     void onOrderAcceptedMessageReceived(OrderAcceptedMessage message) {
         log.info("Order Accepted Message Received: Order={}", message.orderDto().id());
-        orderService.acceptOrRejectOrder(new OrderId(message.orderDto().id()), true);
+        orderService.acceptOrRejectOrder(new OrderId(message.orderDto().id()), true, "");
     }
 
     @RabbitListener(queues = "${spring.rabbitmq.kdg.order-rejected-queue}")
     void onOrderRejectedMessageReceived(OrderRejectedMessage message) {
         log.info("Order Rejected Message Received: Order={}", message.orderDto().id());
-        orderService.acceptOrRejectOrder(new OrderId(message.orderDto().id()), false);
+        orderService.acceptOrRejectOrder(new OrderId(message.orderDto().id()), false, message.orderDto().comment());
     }
 
     @RabbitListener(queues = "${spring.rabbitmq.kdg.order-ready-queue}")

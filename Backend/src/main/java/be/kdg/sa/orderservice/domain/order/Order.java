@@ -3,6 +3,7 @@ package be.kdg.sa.orderservice.domain.order;
 import be.kdg.sa.orderservice.domain.restaurant.RestaurantId;
 import be.kdg.sa.orderservice.domain.restaurant.dish.DishId;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jmolecules.ddd.annotation.Entity;
 
@@ -18,12 +19,15 @@ public class Order {
     private OrderStatus status;
     private final List <OrderLine> orderLines;
     private final RestaurantId restaurantId;
+    @Setter
+    private String comment;
 
-    public Order(OrderId orderId, OrderStatus status, List<OrderLine> orderLines, RestaurantId restaurantId) {
+    public Order(OrderId orderId, OrderStatus status, List<OrderLine> orderLines, RestaurantId restaurantId, String comment) {
         this.orderId = orderId;
         this.status = status;
         this.orderLines = new ArrayList<>(orderLines); // Create mutable copy
         this.restaurantId = restaurantId;
+        this.comment = comment;
     }
 
     public Order(RestaurantId restaurantId) {
@@ -51,9 +55,10 @@ public class Order {
         this.status = OrderStatus.PENDING;
     }
 
-    public void acceptOrReject(boolean accepted){
+    public void acceptOrReject(boolean accepted, String reason){
         log.info("Accepting or rejecting order {}", this.orderId.id());
         this.status.shouldBe(OrderStatus.PENDING);
+        this.comment = reason;
         this.status = accepted ? OrderStatus.ACCEPTED : OrderStatus.DECLINED;
     }
 

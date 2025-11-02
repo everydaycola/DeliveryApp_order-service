@@ -5,5 +5,5 @@ import org.jmolecules.ddd.annotation.ValueObject;
 import java.util.UUID;
 
 @ValueObject
-public record OrderMessagingDto(UUID id, UUID restaurantId) {
+public record OrderMessagingDto(UUID id, UUID restaurantId, String comment) {
 }
