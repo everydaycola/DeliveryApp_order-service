@@ -92,7 +92,7 @@ export async function renderCheckoutPage() {
     // Initialize Stripe Payment Element
     await initializePaymentElement(order.orderLines, restaurantId);
 
-    const form = document.getElementById("checkoutForm")!;
+    const form = document.getElementById("payment-form")!;
 
     form.addEventListener("submit", async (ev) => {
         ev.preventDefault();
@@ -102,11 +102,13 @@ export async function renderCheckoutPage() {
         const address = (document.getElementById("address") as HTMLInputElement).value;
         const email = (document.getElementById("email") as HTMLInputElement).value;
 
+        await submitNewOrder(orderId, name, address, email);
+
         // Confirm Stripe Payment
         const {error} = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: window.location.href // stay on the page for demo purposes
+                return_url: `http://localhost:5173/progress?restaurantId=${restaurantId}&orderId=${orderId}`
             }
         });
 
@@ -115,13 +117,6 @@ export async function renderCheckoutPage() {
             setLoading(false);
             return;
         }
-
-        // Disable form after successful payment
-        form.querySelectorAll("input, button").forEach(el => (el as HTMLInputElement | HTMLButtonElement).disabled = true);
-
-        await submitNewOrder(orderId, name, address, email);
-
-        globalThis.location.href = `/progress?restaurantId=${restaurantId}&orderId=${orderId}`;
 
         setLoading(false);
     });
