@@ -6,17 +6,24 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start:server": "ts-node server/paymentServer.js"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",
+    "@types/express": "^5.0.5",
+    "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
     "vite": "^7.1.2"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^8.2.0",
     "axios": "^1.12.2",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
-    "sass": "^1.93.2"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "sass": "^1.93.2",
+    "stripe": "^19.2.0"
   }
 }
