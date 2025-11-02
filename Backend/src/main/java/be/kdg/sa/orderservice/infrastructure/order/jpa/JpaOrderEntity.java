@@ -19,18 +19,21 @@ import java.util.UUID;
 
     @Column private UUID restaurantId;
 
+    @Column private String comment;
+
     protected JpaOrderEntity() {}
 
-    public JpaOrderEntity(UUID orderId, OrderStatus status, UUID restaurantId) {
+    public JpaOrderEntity(UUID orderId, OrderStatus status, UUID restaurantId, String comment) {
         this.orderId = orderId;
         this.status = status;
         this.orderLines = List.of();
         this.restaurantId = restaurantId;
+        this.comment = comment;
     }
 
     public static JpaOrderEntity fromDomain(Order order) {
         final var jpaOrderEntity =
-                new JpaOrderEntity(order.getOrderId().id(), order.getStatus(), order.getRestaurantId().id());
+                new JpaOrderEntity(order.getOrderId().id(), order.getStatus(), order.getRestaurantId().id(), order.getComment());
 
         final var jpaOrderEntities =
                 order.getOrderLines()
@@ -56,7 +59,9 @@ import java.util.UUID;
                                                     new DishId(jpaOrderLine.getDishId())
                                             ))
                                .toList(),
-                new RestaurantId(this.restaurantId)
+                new RestaurantId(this.restaurantId),
+                this.comment
+
         );
     }
 

@@ -52,10 +52,10 @@ public class OrderService {
         return order;
     }
 
-    public void acceptOrRejectOrder(OrderId orderId, boolean isAccepted){
+    public void acceptOrRejectOrder(OrderId orderId, boolean isAccepted, String reason){
         log.info("Accepting or rejecting order with id {}", orderId);
         final var order = findOrderById(orderId);
-        order.acceptOrReject(isAccepted);
+        order.acceptOrReject(isAccepted, reason);
         orders.save(order);
     }
 
