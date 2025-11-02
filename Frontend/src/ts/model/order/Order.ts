@@ -5,6 +5,14 @@ export type Order = {
     restaurantId: string
     status: OrderStatusType
     orderLines: OrderLine[]
+    comment?: string
+    contactInfo: ContactInfo
+}
+
+export type ContactInfo = {
+    name: string
+    address: string
+    contactEmail: string
 }
 
 export const OrderStatus = {

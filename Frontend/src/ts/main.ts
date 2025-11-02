@@ -2,6 +2,7 @@ import '../style/style.scss'
 import {getRestaurants} from "./api/orderApi.ts";
 import {renderRestaurantTable} from "./restaurantTable";
 import {renderCheckoutPage} from "../pages/checkout.ts";
+import {renderProgressPage} from "../pages/progress.ts";
 
 const restaurants = getRestaurants()
 
@@ -18,13 +19,15 @@ function handleNavClick(e: MouseEvent) {
 async function route() {
     const appDiv = document.getElementById("app") as HTMLDivElement
 
-    const path = window.location.pathname;
+    const path = globalThis.location.pathname;
 
     if (path === "/" || path === "/home") {
         renderRestaurantTable(appDiv,await restaurants);
     }
     else if (path === "/checkout") {
-        renderCheckoutPage();
+        await renderCheckoutPage();
+    } else if (path === "/progress") {
+        await renderProgressPage();
     }
     else {
          appDiv.innerHTML = `
@@ -34,12 +37,13 @@ async function route() {
             </div>
         `;
     }
+    console.log("loaded");
 }
 
 document.addEventListener("click", handleNavClick);
-window.addEventListener("popstate", route);
+globalThis.addEventListener("popstate", route);
 
-route();
+await route();
 
 
 

@@ -1,8 +1,7 @@
 import {getDish, getOrder, submitOrder} from "../ts/api/orderApi.ts";
 import type {Dish} from "../ts/model/dish/Dish.ts";
-import {renderStatusTracker} from "../ts/orderTracking";
-import {type OrderLine, OrderStatus, type OrderStatusType} from "../ts/model/order";
 import {loadStripe, type Stripe} from "@stripe/stripe-js";
+import type {OrderLine} from "../ts/model/order";
 
 let stripe: Stripe | null = null;
 
@@ -36,6 +35,7 @@ export async function renderCheckoutPage() {
     document.getElementById("app")!.innerHTML = `
         <div class="container py-4">
             <h2>Checkout</h2>
+            
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Ordered Dishes</h5>
@@ -92,10 +92,7 @@ export async function renderCheckoutPage() {
     // Initialize Stripe Payment Element
     await initializePaymentElement(order.orderLines, restaurantId);
 
-    // Handle form submission
-    const form = document.getElementById("payment-form")!;
-    const finalBlock = document.getElementById("finalDetails")!;
-    const finalText = document.getElementById("finalText")!;
+    const form = document.getElementById("checkoutForm")!;
 
     form.addEventListener("submit", async (ev) => {
         ev.preventDefault();
@@ -122,26 +119,10 @@ export async function renderCheckoutPage() {
         // Disable form after successful payment
         form.querySelectorAll("input, button").forEach(el => (el as HTMLInputElement | HTMLButtonElement).disabled = true);
 
-        await submitNewOrder(orderId);
+        await submitNewOrder(orderId, name, address, email);
 
-        finalText.innerHTML = `
-            Name: ${name}<br>
-            Address: ${address}<br>
-            E-mail: ${email}<br>
-            ✅ Your order has been placed!
-        `;
+        globalThis.location.href = `/progress?restaurantId=${restaurantId}&orderId=${orderId}`;
 
-        const statusContainer = document.getElementById("orderStatusTracker")!;
-        statusContainer.innerHTML = renderStatusTracker(order.status as OrderStatusType);
-
-        if (order.status === OrderStatus.DECLINED) {
-            statusContainer.innerHTML = `
-                <div class="container py-4">
-                    <div class="alert alert-danger">❌ Your order was declined</div>
-                </div>`;
-        }
-
-        finalBlock.classList.remove("d-none");
         setLoading(false);
     });
 }
@@ -181,8 +162,8 @@ function showMessage(message: string) {
     }, 5000);
 }
 
-async function submitNewOrder(orderId: string) {
-    await submitOrder(orderId);
+async function submitNewOrder(orderId: string, name: string, address: string, email: string){
+    await submitOrder(orderId, name, address, email)
 }
 
 async function generateItemsJson(orderLines: OrderLine[], restaurantId: string) {

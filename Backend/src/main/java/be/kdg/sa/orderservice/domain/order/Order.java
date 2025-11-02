@@ -21,13 +21,16 @@ public class Order {
     private final RestaurantId restaurantId;
     @Setter
     private String comment;
+    @Setter
+    private OrderContactInfo contactInfo = OrderContactInfo.EMPTY;
 
-    public Order(OrderId orderId, OrderStatus status, List<OrderLine> orderLines, RestaurantId restaurantId, String comment) {
+    public Order(OrderId orderId, OrderStatus status, List<OrderLine> orderLines, RestaurantId restaurantId, String comment, OrderContactInfo contactInfo) {
         this.orderId = orderId;
         this.status = status;
         this.orderLines = new ArrayList<>(orderLines); // Create mutable copy
         this.restaurantId = restaurantId;
         this.comment = comment;
+        this.contactInfo = contactInfo;
     }
 
     public Order(RestaurantId restaurantId) {
