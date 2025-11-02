@@ -20,8 +20,8 @@
 @courier1username=iljanachtergaele
 @courier1password=courier
 
-@orderId=bf67f639-0724-4cca-a299-51a33ee47e24
-@deliveryId=0e4cb369-44ed-4ea3-8be4-b6f3bda5c56b
+#@orderId=bf67f639-0724-4cca-a299-51a33ee47e24
+#@deliveryId=0e4cb369-44ed-4ea3-8be4-b6f3bda5c56b
 
 ### GET to see all the restaurant
 GET http://{{orderService}}/api/restaurants
@@ -117,7 +117,7 @@ Authorization: Bearer {{access_token_courier1}}
 %}
 
 ### PATCH request to claim the delivery
-POST http://{{deliveryService}}/api/deliveries/{{deliveryId}}/claim
+PATCH http://{{deliveryService}}/api/deliveries/{{deliveryId}}/claim
 Authorization: Bearer {{access_token_courier1}}
 
 ### PATCH restaurant sets the order as ready
@@ -125,9 +125,9 @@ PATCH http://{{restaurantService}}/api/restaurants/{{grill}}/orders/{{orderId}}/
 Authorization: Bearer {{access_token_owner3}}
 
 ### PATCH request to claim the delivery
-POST http://{{deliveryService}}/api/deliveries/{{deliveryId}}/pickup
+PATCH http://{{deliveryService}}/api/deliveries/{{deliveryId}}/pickup
 Authorization: Bearer {{access_token_courier1}}
 
 ### PATCH request to claim the delivery
-POST http://{{deliveryService}}/api/deliveries/{{deliveryId}}/deliver
+PATCH http://{{deliveryService}}/api/deliveries/{{deliveryId}}/deliver
 Authorization: Bearer {{access_token_courier1}}
