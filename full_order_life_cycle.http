@@ -20,6 +20,8 @@
 @courier1username=iljanachtergaele
 @courier1password=courier
 
+@orderId=71d4678e-9c2c-4989-ad37-fb1ee01b3dce
+
 ### GET to see all the restaurant
 GET http://{{orderService}}/api/restaurants
 
@@ -80,9 +82,13 @@ client_id=keepdishesgoing&client_secret={{clientId}}&username={{grillOwner3usern
 %}
 
 
+### GET all pending orders
+GET http://{{restaurantService}}/api/restaurants/{{grill}}/orders_pending
+Authorization: Bearer {{access_token_owner3}}
+
 ### PATCH accept pending order as restaurant
-# todo Get pending orders as restaurant before this
 PATCH http://{{restaurantService}}/api/restaurants/{{grill}}/orders/{{orderId}}/accept
+Authorization: Bearer {{access_token_owner3}}
 
 ### log in on delivery as a courier
 POST http://{{keycloacService}}/realms/keepdishesgoing/protocol/openid-connect/token HTTP/1.1

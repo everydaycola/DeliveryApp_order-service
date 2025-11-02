@@ -1,7 +1,5 @@
 import {getDish, getOrder, submitOrder} from "../ts/api/orderApi.ts";
 import type {Dish} from "../ts/model/dish/Dish.ts";
-import {renderStatusTracker} from "../ts/orderTracking";
-import {OrderStatus, type OrderStatusType} from "../ts/model/order";
 
 export async function renderCheckoutPage() {
     const params = new URLSearchParams(window.location.search);
@@ -80,8 +78,6 @@ export async function renderCheckoutPage() {
     });
 
     const form = document.getElementById("checkoutForm")!;
-    const finalBlock = document.getElementById("finalDetails")!;
-    const finalText = document.getElementById("finalText")!;
 
     form.addEventListener("submit", async (ev) => {
         ev.preventDefault();
@@ -90,38 +86,14 @@ export async function renderCheckoutPage() {
         const address = (document.getElementById("address") as HTMLInputElement).value;
         const email = (document.getElementById("email") as HTMLInputElement).value;
 
-        // Disable form inputs after submitting
-        form.querySelectorAll("input").forEach(i => i.setAttribute("disabled", "true"));
-        (document.getElementById("checkoutBtn") as HTMLButtonElement).disabled = true;
+        await submitNewOrder(orderId, name, address, email);
 
-        // ✅ Actually submit order to backend here
-        await submitNewOrder(orderId);
+        globalThis.location.href = `/progress?restaurantId=${restaurantId}&orderId=${orderId}`;
 
-        finalText.innerHTML = `
-        Name: ${name}<br>
-        Address: ${address}<br>
-        E-mail: ${email}<br>
-        ✅ Your order has been placed!
-    `;
-
-        const statusContainer = document.getElementById("orderStatusTracker")!;
-        statusContainer.innerHTML = renderStatusTracker(order.status as OrderStatusType);
-
-        if (order.status === OrderStatus.DECLINED) {
-            statusContainer.innerHTML = `
-        <div class="container py-4">
-            <div class="alert alert-danger">
-                ❌ Your order was declined
-            </div>
-        </div>`;
-            return;
-        }
-
-        finalBlock.classList.remove("d-none");
     });
 }
 
 
-async function submitNewOrder(orderId: string){
-    await submitOrder(orderId)
+async function submitNewOrder(orderId: string, name: string, address: string, email: string){
+    await submitOrder(orderId, name, address, email)
 }

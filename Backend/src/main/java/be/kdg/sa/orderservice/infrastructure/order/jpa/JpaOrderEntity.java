@@ -20,20 +20,35 @@ import java.util.UUID;
     @Column private UUID restaurantId;
 
     @Column private String comment;
+    @Column private String name;
+    @Column private String address;
+    @Column private String contactEmail;
 
     protected JpaOrderEntity() {}
 
-    public JpaOrderEntity(UUID orderId, OrderStatus status, UUID restaurantId, String comment) {
+    public JpaOrderEntity(UUID orderId, OrderStatus status, UUID restaurantId, String comment, String name, String address, String contactEmail) {
         this.orderId = orderId;
         this.status = status;
         this.orderLines = List.of();
         this.restaurantId = restaurantId;
         this.comment = comment;
+        this.name = name;
+        this.address = address;
+        this.contactEmail = contactEmail;
     }
 
     public static JpaOrderEntity fromDomain(Order order) {
-        final var jpaOrderEntity =
-                new JpaOrderEntity(order.getOrderId().id(), order.getStatus(), order.getRestaurantId().id(), order.getComment());
+
+        final var contactInfo = order.getContactInfo();
+        final var jpaOrderEntity = new JpaOrderEntity(
+                order.getOrderId().id(),
+                order.getStatus(),
+                order.getRestaurantId().id(),
+                order.getComment(),
+                contactInfo != null ? contactInfo.name() : null,
+                contactInfo != null ? contactInfo.address() : null,
+                contactInfo != null ? contactInfo.contactEmail() : null
+        );
 
         final var jpaOrderEntities =
                 order.getOrderLines()
@@ -47,6 +62,12 @@ import java.util.UUID;
     }
 
     public Order toDomain() {
+        OrderContactInfo contactInfo ;
+        if (this.name != null || this.address != null || this.contactEmail != null) {
+            contactInfo = new OrderContactInfo(this.name, this.address, this.contactEmail);
+        } else {
+            contactInfo = OrderContactInfo.EMPTY;
+        }
 
         return new Order(
                 new OrderId(this.orderId),
@@ -60,8 +81,8 @@ import java.util.UUID;
                                             ))
                                .toList(),
                 new RestaurantId(this.restaurantId),
-                this.comment
-
+                this.comment,
+                contactInfo
         );
     }
 

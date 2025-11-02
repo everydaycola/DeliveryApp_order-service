@@ -35,7 +35,12 @@ export async function addOrderLineToOrder(orderId: string, dishId: string, order
     return response.data
 }
 
-export async function submitOrder(orderId: string) {
-    const response = await axios.patch<Order>(`${BASE_URL}orders/${orderId}`)
+
+export async function submitOrder(orderId: string, name: string, address: string, email: string) {
+    const response = await axios.patch<Order>(`${BASE_URL}orders/${orderId}`, {
+        name: name,
+        address: address,
+        contactEmail: email
+    });
     return response.data;
 }

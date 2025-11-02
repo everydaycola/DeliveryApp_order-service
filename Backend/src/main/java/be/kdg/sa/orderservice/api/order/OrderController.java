@@ -3,6 +3,7 @@ package be.kdg.sa.orderservice.api.order;
 import be.kdg.sa.orderservice.api.order.dtos.NewOrderDto;
 import be.kdg.sa.orderservice.api.order.dtos.NewOrderLineDto;
 import be.kdg.sa.orderservice.api.order.dtos.OrderDto;
+import be.kdg.sa.orderservice.api.order.dtos.SubmittedOrderDto;
 import be.kdg.sa.orderservice.application.OrderService;
 import be.kdg.sa.orderservice.config.RabbitMQProperties;
 import be.kdg.sa.orderservice.domain.order.OrderId;
@@ -59,9 +60,10 @@ public class OrderController {
     }
 
     @PatchMapping("/{orderId}")
-    public ResponseEntity<OrderDto> submitOrder(@PathVariable final UUID orderId){
+    public ResponseEntity<OrderDto> submitOrder(@PathVariable final UUID orderId,
+                                                @RequestBody final SubmittedOrderDto submittedOrderDto){
         log.info("Submitting order {}", orderId);
-        final var order = orders.submitOrder(new OrderId(orderId));
+        final var order = orders.submitOrder(new OrderId(orderId), submittedOrderDto);
         final var dto = OrderDto.from(order);
 
         rabbitTemplate.convertAndSend(rabbitMQProperties.getExchangeName(),

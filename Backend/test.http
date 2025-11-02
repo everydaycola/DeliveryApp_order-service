@@ -41,3 +41,10 @@ Content-Type: application/json
 
 ### Submit an Order
 PATCH http://localhost:8080/api/orders/{{order1}}
+Content-Type: application/json
+
+{
+  "name": "my name",
+  "address": "my house",
+  "contactEmail": "my.email@e.mail.com"
+}

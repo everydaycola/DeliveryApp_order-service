@@ -1,5 +1,6 @@
 package be.kdg.sa.orderservice.application;
 
+import be.kdg.sa.orderservice.api.order.dtos.SubmittedOrderDto;
 import be.kdg.sa.orderservice.domain.order.Order;
 import be.kdg.sa.orderservice.domain.order.OrderId;
 import be.kdg.sa.orderservice.domain.order.OrderRepository;
@@ -44,9 +45,10 @@ public class OrderService {
         return order;
     }
 
-    public Order submitOrder(OrderId orderId){
+    public Order submitOrder(OrderId orderId, SubmittedOrderDto submittedOrderDto){
         log.info("Submitting order with id {}", orderId);
         final var order = findOrderById(orderId);
+        order.setContactInfo(submittedOrderDto.toDomain());
         order.submit();
         orders.save(order);
         return order;

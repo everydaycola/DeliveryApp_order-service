@@ -98,5 +98,5 @@ async function toCheckout(restaurantId: string ,orderLines: OrderLine[]){
     await Promise.all(orderLines.map(ol =>
         addOrderLineToOrder(order.orderId, ol.dishId, ol)
     ));
-    window.location.href= `/checkout?restaurantId=${restaurantId}&orderId=${order.orderId}`;
+    globalThis.location.href= `/checkout?restaurantId=${restaurantId}&orderId=${order.orderId}`;
 }
