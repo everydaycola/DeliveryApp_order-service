@@ -20,7 +20,8 @@
 @courier1username=iljanachtergaele
 @courier1password=courier
 
-@orderId=71d4678e-9c2c-4989-ad37-fb1ee01b3dce
+@orderId=bf67f639-0724-4cca-a299-51a33ee47e24
+@deliveryId=0e4cb369-44ed-4ea3-8be4-b6f3bda5c56b
 
 ### GET to see all the restaurant
 GET http://{{orderService}}/api/restaurants
@@ -66,6 +67,13 @@ Content-Type: application/json
 
 ### Submit an Order
 PATCH http://{{orderService}}/api/orders/{{orderId}}
+Content-Type: application/json
+
+{
+  "name": "my name",
+  "address": "my house",
+  "contactEmail": "my.email@e.mail.com"
+}
 
 ### see your order
 GET http://{{orderService}}/api/orders/{{orderId}}
@@ -78,7 +86,6 @@ client_id=keepdishesgoing&client_secret={{clientId}}&username={{grillOwner3usern
 
 > {%
     client.global.set("access_token_owner3", response.body.access_token);
-
 %}
 
 

@@ -11,10 +11,10 @@ public class RabbitMQProperties {
     private String orderPlacedBinding;
     private String orderRejectedQueue;
     private String orderRejectedBinding;
-    private String orderAcceptedQueue;
-    private String orderAcceptedBinding;
-    private String orderReadyQueue;
-    private String orderReadyBinding;
+    private String orderAcceptedOrderQueue;
+    private String orderAcceptedOrderBinding;
+    private String orderReadyOrderQueue;
+    private String orderReadyOrderBinding;
     private String orderPickedUpQueue;
     private String orderPickedUpBinding;
     private String orderDeliveredQueue;

@@ -22,7 +22,7 @@ public class RabbitMQTopology {
     @Bean
     Queue orderAcceptedQueue() {
         return QueueBuilder
-                .nonDurable(properties.getOrderAcceptedQueue())
+                .nonDurable(properties.getOrderAcceptedOrderQueue())
                 .build();
     }
 
@@ -36,7 +36,7 @@ public class RabbitMQTopology {
     @Bean
     Queue orderReadyQueue() {
         return QueueBuilder
-                .nonDurable(properties.getOrderReadyQueue())
+                .nonDurable(properties.getOrderReadyOrderQueue())
                 .build();
     }
 
@@ -59,7 +59,7 @@ public class RabbitMQTopology {
         return BindingBuilder
                 .bind(orderAcceptedQueue())
                 .to(kdgExchange())
-                .with(properties.getOrderAcceptedBinding());
+                .with(properties.getOrderAcceptedOrderBinding());
     }
 
     @Bean
@@ -75,7 +75,7 @@ public class RabbitMQTopology {
         return BindingBuilder
                 .bind(orderReadyQueue())
                 .to(kdgExchange())
-                .with(properties.getOrderReadyBinding());
+                .with(properties.getOrderReadyOrderBinding());
     }
 
     @Bean
